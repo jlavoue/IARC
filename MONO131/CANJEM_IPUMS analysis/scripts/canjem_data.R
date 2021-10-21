@@ -10,16 +10,15 @@
 
 #' scientific sources [Siemiatycki](https://pubmed.ncbi.nlm.nih.gov/29642096/), [Sauvé et al](https://pubmed.ncbi.nlm.nih.gov/29897403/)
 
-setwd("C:/jerome/Dropbox/bureau/CIRC/Mono131/IPUMS ISCO88")
 
-cobalt <- read.delim("CANJEMCobalt.txt")
+cobalt <- read.delim("MONO131/CANJEM_IPUMS analysis/raw data/fromCanjemapp/CANJEMCobalt.txt")
 
-tungstene <- read.delim("CANJEMtungsten.txt")
+tungstene <- read.delim("MONO131/CANJEM_IPUMS analysis/raw data/fromCanjemapp/CANJEMtungsten.txt")
 
-antimony <- read.delim("CANJEMantimony.txt")
+antimony <- read.delim("MONO131/CANJEM_IPUMS analysis/raw data/fromCanjemapp/CANJEMantimony.txt")
 
-saveRDS( cobalt , "CANJEMCobalt.RDS" )
+saveRDS( cobalt , "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMCobalt.RDS" )
 
-saveRDS( tungstene , "CANJEMtungsten.RDS" )
+saveRDS( tungstene , "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMtungsten.RDS" )
 
-saveRDS( antimony , "CANJEMantimony.RDS")
+saveRDS( antimony , "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMantimony.RDS")
