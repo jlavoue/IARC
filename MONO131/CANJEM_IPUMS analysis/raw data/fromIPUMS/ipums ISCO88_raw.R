@@ -5,6 +5,8 @@
 #####################################
 
 
+###### WARNING : This script was run only once since the raw data is ~ 25 GiB large.
+
     library(data.table)
     
     library(readxl)
@@ -34,10 +36,6 @@
 
 
 ####### quickly getting rid of the giant files : sum of PEWT by country - year - ISCO88   
-
-mysum <- readRDS("CIRC/IPUMS/mysum.RDS")
-mysum2 <- readRDS("CIRC/IPUMS/mysum2.RDS")
-mysum3 <- readRDS("CIRC/IPUMS/mysum3.RDS")
 
 
 setDT(mydata) 
