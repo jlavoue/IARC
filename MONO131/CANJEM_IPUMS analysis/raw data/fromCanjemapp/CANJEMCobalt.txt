@@ -1,0 +1,27 @@
+Activity.code 	p 	ntot 	nsub 	nexp 	Confidence 	Intensity 	Frequency 	FWI 	Activity.title
+8-32 	65 	65 	42 	42 	Probable 	High 	[2-12h[ 	5 	Toolmakers, Metal Pattern Makers and Metal Markers
+8-42 	22 	64 	43 	14 	Probable 	Medium 	[0-2h[ 	0.12 	Watch, Clock and Precision-Instrument Makers
+9-69 	15 	114 	74 	17 	Probable 	Low 	[2-12h[ 	0.2 	Stationary Engine and Related Equipment Operators Not Elsewhere Classified
+8-33 	11 	152 	108 	17 	Probable 	Low 	[2-12h[ 	0.2 	Machine-Tool Setter-Operators
+8-35 	11 	73 	56 	8 	Probable 	Medium 	[2-12h[ 	1 	Metal Grinders, Polishers and Tool Sharpeners
+7-41 	11 	57 	48 	6 	Probable 	Low 	[2-12h[ 	0.3 	Crushers, Grinders and Mixers
+8-34 	10 	209 	152 	21 	Probable 	Medium 	[2-12h[ 	0.2 	Machine-Tool Operators
+9-22 	9.3 	108 	74 	10 	Probable 	Low 	[2-12h[ 	0.25 	Printing Pressmen
+0-63 	7.7 	13 	11 	1 	Possible 	Medium 	[0-2h[ 	0.12 	Dentists
+7-13 	5 	20 	15 	1 	Probable 	Low 	[40h+] 	1 	Well Drillers, Borers and Related Workers
+9-83 	4.9 	41 	34 	2 	Probable 	Low 	[2-12h[ 	0.23 	Railway Engine-Drivers and Firemen
+9-29 	4.8 	42 	40 	2 	Definite 	Low 	[2-12h[ 	0.2 	Printers and Related Workers Not Elsewhere Classified
+7-45 	4.5 	22 	20 	1 	Probable 	Low 	[2-12h[ 	0.15 	Petroleum-Refining Workers
+8-39 	1.6 	122 	106 	2 	Probable 	Low 	[2-12h[ 	0.2 	Blacksmiths, Toolmakers and Machine-Tool Operators Not Elsewhere Classified
+9-01 	1.1 	88 	82 	1 	Possible 	Low 	[40h+] 	1.8 	Rubber and Plastics Product Makers (except Tire Makers and Tire Vulcanizers)
+5-70 	0.93 	108 	76 	1 	Possible 	Low 	[12-40h[ 	0.3 	Hairdressers, Barbers, Beauticians and Related Workers
+0-32 	0.55 	183 	90 	1 	Possible 	Low 	[12-40h[ 	0.56 	Draughtsmen
+7-00 	0.52 	580 	494 	3 	Probable 	Medium 	[2-12h[ 	1 	Production Supervisors and General Foremen
+8-73 	0.48 	208 	153 	1 	Possible 	Medium 	[40h+] 	5 	Sheet-Metal Workers
+1-31 	0.45 	224 	169 	1 	Probable 	Low 	[2-12h[ 	0.2 	University and Higher Education Teachers
+1-32 	0.34 	297 	205 	1 	Possible 	Medium 	[0-2h[ 	0.12 	Secondary Education Teachers
+9-99 	0.3 	674 	582 	2 	Probable 	Medium 	[2-12h[ 	0.6 	Labourers Not Elsewhere Classified
+5-82 	0.25 	402 	319 	1 	Probable 	Low 	[2-12h[ 	0.062 	Policemen and Detectives
+8-49 	0.24 	422 	318 	1 	Probable 	Low 	[2-12h[ 	0.2 	Machinery Fitters, Machine Assemblers and Precision-Instrument Makers (except Electrical) Not Elsewhere Classified
+9-71 	0.22 	902 	746 	2 	Probable 	Low 	[2-12h[ 	0.21 	Dockers and Freight Handlers
+5-52 	0.21 	486 	423 	1 	Possible 	Low 	[2-12h[ 	0.2 	Charworkers, Cleaners and Related Workers 

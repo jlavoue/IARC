@@ -1,0 +1,1 @@
+Analyses aiming merge CANJEM information on exposure prevalence across 3-digit ISCO88 codes with IPUMS international census information.

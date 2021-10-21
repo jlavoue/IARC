@@ -1,0 +1,16 @@
+Activity.code 	p 	ntot 	nsub 	nexp 	Confidence 	Intensity 	Frequency 	FWI 	Activity.title
+8-32 	75 	65 	42 	49 	Probable 	High 	[2-12h[ 	3.7 	Toolmakers, Metal Pattern Makers and Metal Markers
+8-33 	16 	152 	108 	25 	Probable 	Low 	[2-12h[ 	0.15 	Machine-Tool Setter-Operators
+8-34 	12 	209 	152 	26 	Probable 	Medium 	[2-12h[ 	0.74 	Machine-Tool Operators
+8-35 	9.6 	73 	56 	7 	Probable 	Medium 	[2-12h[ 	0.74 	Metal Grinders, Polishers and Tool Sharpeners
+8-51 	2.4 	41 	32 	1 	Possible 	Low 	[2-12h[ 	0.15 	Electrical Fitters
+8-41 	2.1 	189 	165 	4 	Definite 	Low 	[2-12h[ 	0.34 	Machinery Fitters and Machine Assemblers
+3-42 	1.2 	81 	56 	1 	Definite 	Low 	[2-12h[ 	0.094 	Automatic Data-Processing Machine Operators
+8-74 	1 	97 	86 	1 	Probable 	Medium 	[0-2h[ 	0.12 	Structural Metal Preparers and Erectors
+8-39 	0.82 	122 	106 	1 	Probable 	Medium 	[2-12h[ 	0.74 	Blacksmiths, Toolmakers and Machine-Tool Operators Not Elsewhere Classified
+7-00 	0.69 	580 	494 	4 	Probable 	Medium 	[2-12h[ 	0.74 	Production Supervisors and General Foremen
+9-49 	0.4 	253 	228 	1 	Possible 	Low 	[40h+] 	1 	Other Production and Related Workers
+3-91 	0.3 	658 	538 	2 	Probable 	Medium 	[2-12h[ 	0.14 	Stock Clerks
+5-52 	0.21 	486 	423 	1 	Probable 	Medium 	[0-2h[ 	0.12 	Charworkers, Cleaners and Related Workers
+9-99 	0.15 	674 	582 	1 	Probable 	Medium 	[2-12h[ 	0.74 	Labourers Not Elsewhere Classified
+

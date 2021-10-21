@@ -1,0 +1,24 @@
+Activity.code 	p 	ntot 	nsub 	nexp 	Confidence 	Intensity 	Frequency 	FWI 	Activity.title
+9-21 	72 	32 	23 	23 	Definite 	Medium 	[40h+] 	2.2 	Compositors and Type-Setters
+9-69 	41 	114 	74 	47 	Possible 	Low 	[2-12h[ 	0.15 	Stationary Engine and Related Equipment Operators Not Elsewhere Classified
+9-22 	19 	108 	74 	21 	Definite 	Low 	[40h+] 	1 	Printing Pressmen
+7-22 	18 	11 	11 	2 	Definite 	High 	[40h+] 	2.5 	Metal Rolling-Mill Workers
+7-23 	13 	31 	29 	4 	Probable 	Low 	[40h+] 	1.1 	Metal Melters and Reheaters
+9-29 	12 	42 	40 	5 	Definite 	Low 	[40h+] 	1 	Printers and Related Workers Not Elsewhere Classified
+7-21 	5.6 	18 	18 	1 	Probable 	Low 	[40h+] 	1 	Metal Smelting, Converting and
+7-41 	5.3 	57 	48 	3 	Possible 	Low 	[2-12h[ 	0.2 	Crushers, Grinders and Mixers
+9-84 	4.4 	45 	37 	2 	Probable 	Low 	[40h+] 	1.2 	Railway Brakemen, Signalmen and Shunters
+7-29 	4.3 	69 	65 	3 	Probable 	Low 	[2-12h[ 	0.15 	Metal Processers Not Elsewhere Classified
+9-73 	3.7 	82 	61 	3 	Probable 	Low 	[40h+] 	1 	Crane and Hoist Operators
+7-25 	2.5 	40 	33 	1 	Probable 	Medium 	[2-12h[ 	0.74 	Metal Moulders and Coremakers
+8-51 	2.4 	41 	32 	1 	Definite 	Low 	[2-12h[ 	0.15 	Electrical Fitters
+8-73 	1.9 	208 	153 	4 	Probable 	Low 	[2-12h[ 	0.15 	Sheet-Metal Workers
+8-39 	0.82 	122 	106 	1 	Possible 	Low 	[12-40h[ 	0.45 	Blacksmiths, Toolmakers and Machine-Tool Operators Not Elsewhere Classified
+7-00 	0.69 	580 	494 	4 	Definite 	Low 	[40h+] 	0.57 	Production Supervisors and General Foremen
+9-74 	0.69 	145 	121 	1 	Probable 	Low 	[12-40h[ 	0.69 	Earth-Moving and Related Machinery Operators
+9-99 	0.59 	674 	582 	4 	Probable 	Low 	[40h+] 	1 	Labourers Not Elsewhere Classified
+8-41 	0.53 	189 	165 	1 	Probable 	Low 	[2-12h[ 	0.15 	Machinery Fitters and Machine Assemblers
+5-52 	0.41 	486 	423 	2 	Definite 	Low 	[40h+] 	0.67 	Charworkers, Cleaners and Related Workers
+8-55 	0.41 	244 	162 	1 	Definite 	Low 	[40h+] 	1 	Electrical Wiremen
+8-43 	0.24 	418 	265 	1 	Probable 	Low 	[40h+] 	1.1 	Motor-Vehicle Mechanics
+
