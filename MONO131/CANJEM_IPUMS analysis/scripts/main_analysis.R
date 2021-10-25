@@ -9,7 +9,6 @@
 
 #+ r setup, include=FALSE, cache = FALSE
 require("knitr")
-require("flextable")
 ## setting working directory
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
@@ -77,7 +76,6 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     knitr::kable(tungsten)
     
     
-
 
 
     

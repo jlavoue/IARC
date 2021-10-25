@@ -92,15 +92,3 @@ compounds, antimony compounds, and tungsten compounds.
 | 3-91          | Stock Clerks                                                                |  658 |  538 |    2 |  0.30 | Probable   | Medium    | \[2-12h\[ | 0.140 |
 | 5-52          | Charworkers, Cleaners and Related Workers                                   |  486 |  423 |    1 |  0.21 | Probable   | Medium    | \[0-2h\[  | 0.120 |
 | 9-99          | Labourers Not Elsewhere Classified                                          |  674 |  582 |    1 |  0.15 | Probable   | Medium    | \[2-12h\[ | 0.740 |
-
-Apply a function to each element of a vector
-
-@description The map function transform the input, returning a vector
-the same length as the input.
-
--   `map()` returns a list or a data frame
--   `map_lgl()`, `map_int()`, `map_dbl()` and `map_chr()` return vectors
-    of the corresponding type (or die trying);
--   `map_dfr()` and `map_dfc()` return data frames created by
-    row-binding and column-binding respectively. They require dplyr to
-    be installed.
