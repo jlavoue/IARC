@@ -78,12 +78,24 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     
     for (i in 1:length(mytab[,1])) mytab$n.i88[i] <- length(unique( isco684Dto88$isco883D[ isco684Dto88$CODE_PONCTUE_SOURCE == mytab$isco68[i]] ))
     
+    mytabl.miss <- mytab[ mytab$n.i88 != 1 , ]
+    
     mytab <- mytab[ mytab$n.i88 == 1 , ]
     
     mytab$isco88 <- character( length(mytab[,1] ))
     
-    for (i in 1:length(mytab[,1])) mytab$isco88[i] <- isco68to88$isco883D[ isco68to88$isco683D == mytab$isco68[i]][1]
+    for (i in 1:length(mytab[,1])) mytab$isco88[i] <- isco684Dto88$isco883D[ isco684Dto88$CODE_PONCTUE_SOURCE == mytab$isco68[i]][1]
     
-    c68to88 <- mytab[ , c(1,3) ]
+    c684Dto88 <- mytab[ , c(1,3) ]
+    
+    
 
+    ## Coverage of the CANJEM population
+    
+    canjem.wk <- read.csv('MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/canjem.workoccind.csv',stringsAsFactors=FALSE)
+    
+    100*length(canjem.wk[ is.element( canjem.wk$CITP1968 , c684Dto88$isco68 ), 1]) / length(canjem.wk[,1])
+    
+    
+    ## http://www.harryganzeboom.nl/isco68/index.htm
     
