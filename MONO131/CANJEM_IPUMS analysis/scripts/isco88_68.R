@@ -59,11 +59,31 @@
     
     
     
-    #### only ISCO 68 to ISCO 88 works
+    #### only ISCO 68 to ISCO 88 works, and not superbly
     
     
 
 saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS" )
 
     
+    ### trying ISCO68 4D to ISCO883D
+
+    isco684Dto88 <- read_xlsx("MONO131/CANJEM_IPUMS analysis/raw data/Isco8868conversion/CITP1968_CITP1988_transcodage.xlsx")
+    
+    isco684Dto88$isco883D <- substring( isco684Dto88$CODE_PONCTUE_DEST , 1 , 3)
+    
+    mytab <- data.frame( isco68 = unique( isco684Dto88$CODE_PONCTUE_SOURCE ) , stringsAsFactors = FALSE )
+    
+    mytab$n.i88 <- numeric( length(mytab[,1] ))
+    
+    for (i in 1:length(mytab[,1])) mytab$n.i88[i] <- length(unique( isco684Dto88$isco883D[ isco684Dto88$CODE_PONCTUE_SOURCE == mytab$isco68[i]] ))
+    
+    mytab <- mytab[ mytab$n.i88 == 1 , ]
+    
+    mytab$isco88 <- character( length(mytab[,1] ))
+    
+    for (i in 1:length(mytab[,1])) mytab$isco88[i] <- isco68to88$isco883D[ isco68to88$isco683D == mytab$isco68[i]][1]
+    
+    c68to88 <- mytab[ , c(1,3) ]
+
     

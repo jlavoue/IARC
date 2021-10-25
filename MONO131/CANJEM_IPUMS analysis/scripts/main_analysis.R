@@ -9,6 +9,7 @@
 
 #+ r setup, include=FALSE, cache = FALSE
 require("knitr")
+library(stringr)
 ## setting working directory
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
@@ -19,10 +20,13 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     ## CANJEM
     
     cobalt <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMCobalt.RDS" )
+    cobalt$Activity.code <- str_trim( cobalt$Activity.code,  side = "both")
     
     tungsten <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMtungsten.RDS" )
+    tungsten$Activity.code <- str_trim( tungsten$Activity.code,  side = "both")
     
     antimony <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMantimony.RDS")
+    antimony$Activity.code <- str_trim( antimony$Activity.code,  side = "both")
     
     
     ## CONVERSION
@@ -77,6 +81,16 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     
     
 
+#' ** Linking CANJEM occupations to ISCO 88 codes using the crosswwalks**
 
+#+ linkaege , include = FALSE
+#+ 
+
+  cobalt$ISCO88 <- c68to88$isco88[ match( cobalt$Activity.code , c68to88$isco68 ) ]        
+  
+  antimony$ISCO88 <- c68to88$isco88[ match( antimony$Activity.code , c68to88$isco68 ) ]        
+  
+  tungsten$ISCO88 <- c68to88$isco88[ match( tungsten$Activity.code , c68to88$isco68 ) ]        
+  
     
         
