@@ -8,6 +8,8 @@
       library(data.table)
       
       library(readxl)
+
+      library(haven)
       
 ######### creating the crosswalks
 
@@ -99,3 +101,86 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     
     ## http://www.harryganzeboom.nl/isco68/index.htm
     
+    #citation
+    #Ganzeboom, Harry B.G.;Treiman, Donald J., “International Stratification and Mobility File: Conversion Tools.” Amsterdam: Department of Social Research Methodology, http://home.fsw.vu.nl/hbg.ganzeboom/ismf. <Date of last revision>
+    
+    test <- read_spss("MONO131/CANJEM_IPUMS analysis/raw data/fromGanzeboom/isco6888.sps")
+    
+    isco6888.g <- read.table( "MONO131/CANJEM_IPUMS analysis/raw data/fromGanzeboom/isco6888.txt" , 
+                         header = FALSE, sep = "=", dec = ".")
+    
+    names( isco6888.g ) <- c("isco68","isco88")
+    
+    isco6888.g$isco68.f <- paste( substring( isco6888.g$isco68 , 5 , 5 ) , "-" , substring( isco6888.g$isco68 , 6 , 7 ) , "." , substring( isco6888.g$isco68 , 8 , 8 ) , "0" , sep="")
+    
+    isco6888.g$isco88.f <- substring( isco6888.g$isco88 , 1 , 4 )
+    
+    isco6888.g$isco88.3D <- substring( isco6888.g$isco88.f , 1 , 3)
+    
+    mytab <- data.frame( isco68 = unique( isco6888.g$isco68.f ) , stringsAsFactors = FALSE )
+    
+    mytab$n.i88 <- numeric( length(mytab[,1] ))
+    
+    for (i in 1:length(mytab[,1])) mytab$n.i88[i] <- length(unique( isco6888.g$isco88.3D[ isco6888.g$isco68.f == mytab$isco68[i]] ))
+    
+    mytabl.miss <- mytab[ mytab$n.i88 != 1 , ]
+    
+    mytab <- mytab[ mytab$n.i88 == 1 , ]
+    
+    isco6888.g.univocal <- isco6888.g[ is.element( isco6888.g$isco68.f , mytab$isco68) , ]
+    
+    isco6888.g.multivocal <- isco6888.g[ ! is.element( isco6888.g$isco68.f , mytab$isco68) , ]
+ 
+            #creating a an ISCO68 3D version
+    
+            isco6888.g.3D <- isco6888.g.univocal[ substring( isco6888.g.univocal$isco68.f , 6 , 6) == 0 , ]
+            
+            isco6888.g.3D$isco88.3D <- substring( isco6888.g.3D$isco88. , 1 , 3 )
+            
+            isco6888.g.3D$isco68.3D <- substring( isco6888.g.3D$isco68.f , 1 , 4)
+    
+    ### assigning ISCO88 3D to CANJEM, creating a crosswalk file
+    
+    mycrosswalk <- data.frame( table( canjem.wk$CITP1968 ) , stringsAsFactors = FALSE )
+    
+    names( mycrosswalk ) <- c( "isco68" , "n" )
+    
+    ####### assigning ISCO88 3D using the CAPS officical crosswalk
+    
+    mycrosswalk$isco88.caps <- c684Dto88$isco88[ match( mycrosswalk$isco68 , c684Dto88$isco68)]
+
+    ####### assigning ISCO88 3D using the GANZEBOOM data
+    
+    #step1 using 5 digits
+    
+    mystatus <- rep( "unknown" , length( mycrosswalk[,1] ) )
+    
+    mycrosswalk$isco88.ganz <- substring( isco6888.g.univocal$isco88.f[ match( mycrosswalk$isco68 , isco6888.g.univocal$isco68.f)] , 1 , 3)
+    
+    mystatus[ !is.na(mycrosswalk$isco88.ganz) ] <- "Ganz.5D"
+    
+    #step2 using 3 digits
+    
+    mycrosswalk$isco88.ganz[ mystatus == "unknown" ] <- isco6888.g.3D$isco88.3D[ match( substring( mycrosswalk$isco68[ mystatus == "unknown" ] , 1 , 4) ,  isco6888.g.3D$isco68.3D)]
+
+    mystatus[ !is.na(mycrosswalk$isco88.ganz) & mystatus == "unknown" ] <- "Ganz.3D"
+    
+    mycrosswalk$ganz.status <- mystatus
+    
+    ### comparability of 2 codes
+    
+    mycrosswalk$diff.status <- "XXX"
+    
+    mycrosswalk$diff.status[ is.na( mycrosswalk$isco88.caps) & is.na( mycrosswalk$isco88.ganz)] <- "Both missing"
+    mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & is.na( mycrosswalk$isco88.ganz)] <- "Ganz missing"
+    mycrosswalk$diff.status[ is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz)] <- "CAPS missing"
+    
+    mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz) & mycrosswalk$isco88.caps == mycrosswalk$isco88.ganz] <- "EQUAL"
+    mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz) & mycrosswalk$isco88.caps != mycrosswalk$isco88.ganz] <- "UNEQUAL"
+    
+    table(mycrosswalk$diff.status)
+    
+    sum( mycrosswalk$n[ mycrosswalk$diff.status=="UNEQUAL" ])
+    
+    
+            
