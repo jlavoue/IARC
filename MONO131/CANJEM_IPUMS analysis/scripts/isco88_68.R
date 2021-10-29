@@ -178,9 +178,14 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz) & mycrosswalk$isco88.caps == mycrosswalk$isco88.ganz] <- "EQUAL"
     mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz) & mycrosswalk$isco88.caps != mycrosswalk$isco88.ganz] <- "UNEQUAL"
     
+    ### exploring the results
+    
     table(mycrosswalk$diff.status)
     
     sum( mycrosswalk$n[ mycrosswalk$diff.status=="UNEQUAL" ])
     
+    length(unique( mycrosswalk$isco68[ mycrosswalk$diff.status=="UNEQUAL" ]))
     
+    problem.isco <- mycrosswalk[ mycrosswalk$diff.status=="Both missing"  | 
+                                   mycrosswalk$diff.status=="UNEQUAL"   , ]
             
