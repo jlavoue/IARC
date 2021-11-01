@@ -188,4 +188,9 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     
     problem.isco <- mycrosswalk[ mycrosswalk$diff.status=="Both missing"  | 
                                    mycrosswalk$diff.status=="UNEQUAL"   , ]
+    canjem.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68 )]
+    
+    data.frame( table( canjem.status ) )
+    
+    sum( table( canjem.status ) )
             
