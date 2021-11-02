@@ -9,6 +9,9 @@
       
       library(readxl)
 
+      library(writexl)
+
+ 
       library(haven)
       
 ######### creating the crosswalks
@@ -193,4 +196,10 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     data.frame( table( canjem.status ) )
     
     sum( table( canjem.status ) )
-            
+    
+    #### saving the final crosswalk
+    
+    saveRDS( mycrosswalk , "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.RDS")
+    
+    write_xlsx( mycrosswalk , "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.xlsx")
+    
