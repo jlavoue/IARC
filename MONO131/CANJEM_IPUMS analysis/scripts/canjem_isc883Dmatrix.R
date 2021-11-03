@@ -39,7 +39,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
   mycrosswalk <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.RDS")
   
-  canjem.wk$ISCO883D <- mycrosswalk$isco88.ganz[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
+  canjem.wk$ISCO883D <- mycrosswalk$isco883d[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
   
   canjem.wk$ISCO883D.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
   
@@ -68,15 +68,17 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
                           Cmin = 1,
                           Nmin = 10,
                           Nmin.s = 3,
-                          time.breaks = c(1921,2005))
+                          time.breaks = c(1921,2005),
+                         agents = c("512799","515199","517499"))
   
 
   myfun <- function( constraints ) { 
     
-      result <- matrix.fun( jdb = canjem.jdb[ is.element( canjem.jdb$IDCHEM , agents) ,],
+
+      result <- matrix.fun( jdb = canjem.jdb[ is.element( canjem.jdb$IDCHEM , constraints$agents ) ,],
                           workoccind = canjem.wk,
                           vec.dim = "ISCO883D" ,
-                          agents =  c("512799","515199","517499"),
+                          agents =  constraints$agents,
                           type='R1expo',
                           Dmin = constraints$Dmin,
                           Fmin = constraints$Fmin,
