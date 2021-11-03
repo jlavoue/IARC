@@ -132,12 +132,24 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     isco6888.g.univocal <- isco6888.g[ is.element( isco6888.g$isco68.f , mytab$isco68) , ]
     
     isco6888.g.multivocal <- isco6888.g[ ! is.element( isco6888.g$isco68.f , mytab$isco68) , ]
+    
+    ## editorial decision
+    
+    #8-35.00 <- 821
+    
+    #6-29.00 <- 920
+    
+    #5-10.00 <- 131
+    
+    isco6888.g.multivocal <- isco6888.g.multivocal[ is.element( isco6888.g.multivocal$isco88.3D , c("821","920","131")),]
+    
+    isco6888.g.univocal <- rbind( isco6888.g.univocal,isco6888.g.multivocal)
  
             #creating a an ISCO68 3D version
     
             isco6888.g.3D <- isco6888.g.univocal[ substring( isco6888.g.univocal$isco68.f , 6 , 6) == 0 , ]
             
-            isco6888.g.3D$isco88.3D <- substring( isco6888.g.3D$isco88. , 1 , 3 )
+            isco6888.g.3D$isco88.3D <- substring( isco6888.g.3D$isco88.f , 1 , 3 )
             
             isco6888.g.3D$isco68.3D <- substring( isco6888.g.3D$isco68.f , 1 , 4)
     
@@ -179,6 +191,9 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     
     mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz) & mycrosswalk$isco88.caps == mycrosswalk$isco88.ganz] <- "EQUAL"
     mycrosswalk$diff.status[ !is.na( mycrosswalk$isco88.caps) & !is.na( mycrosswalk$isco88.ganz) & mycrosswalk$isco88.caps != mycrosswalk$isco88.ganz] <- "UNEQUAL"
+    
+
+    
     
     ### exploring the results
     
