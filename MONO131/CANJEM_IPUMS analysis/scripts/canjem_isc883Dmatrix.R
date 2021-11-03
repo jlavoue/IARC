@@ -20,6 +20,8 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 #'*This script 1. creates CANJEM ISCO88_3D for Cobalt, Antimony and Tungsten according to various constraints and 2.evaluates each job in the CANJEM databases as "exposed", "unexposed" , "unknown".*
 
 #+ libraries and datasets, include = FALSE
+
+  library(plyr)
        
   canjem.wk <- read.csv("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/canjem.workoccind.csv")   
   
@@ -31,7 +33,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
   source("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/script matrix creation v7.R")
 
-#+ creation of the JEM, include = FALSE    
+#+ loading the crosswalk, include = FALSE    
   
   # adding the ISCO88 codes
   
@@ -41,6 +43,12 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
   canjem.wk$ISCO883D.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
   
+  ### adding the "armed forces" cateegory, which has a code 10 in the IPUMS data
+  
+  canjem.wk$ISCO883D[ canjem.wk$CITP1968 == "0-00.00"] <- 10
+  
+  canjem.wk$ISCO883D.status[ canjem.wk$CITP1968 == "0-00.00"] <- "IPUMS code for military"
+  
   
 #' The table below describes the state of the ISCO68 to ISCO683D crosswalk, which compared the CAPS official crosswalk to the Ganzeboom crosswalk  
   
@@ -48,19 +56,65 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
   knitr::kable(data.frame(table(canjem.wk$ISCO883D.status)))
   
-  #mymatrix <- matrix.fun( jdb = canjem.jdb[ is.element( canjem.jdb$IDCHEM , agents) ,],
-  #                        workoccind = canjem.wk,
-   #                       vec.dim = ,
-    #                      agents =  c("512799","515199","517499"),
-     #                     type='R1expo',
-      #                    Dmin,
-       #                   Fmin,
-        #                  Cmin,
-         #                 Nmin,
-          #                Nmin.s,
-           #               time.breaks,
-            #              Fcut= c(0, 2, 12, 40, max(canjem.jdb$F_FINAL)),
-             #             FWI.threshold = 1)	
-  #
+#+ creation of the JEM, include = FALSE 
   
+  canjem.wk <-  canjem.wk[ canjem.wk$ISCO883D.status != "Both missing" , ]
+  
+  canjem.wk$id.job <-paste(canjem.wk$ID,canjem.wk$JOB,sep="-")
+  canjem.jdb$id.job <-paste(canjem.jdb$ID,canjem.jdb$JOB,sep="-")
+  
+  myconstraints <- list( Dmin = 0.05,
+                          Fmin = 0.5,
+                          Cmin = 1,
+                          Nmin = 10,
+                          Nmin.s = 3,
+                          time.breaks = c(1921,2005))
+  
+
+  myfun <- function( constraints ) { 
+    
+      result <- matrix.fun( jdb = canjem.jdb[ is.element( canjem.jdb$IDCHEM , agents) ,],
+                          workoccind = canjem.wk,
+                          vec.dim = "ISCO883D" ,
+                          agents =  c("512799","515199","517499"),
+                          type='R1expo',
+                          Dmin = constraints$Dmin,
+                          Fmin = constraints$Fmin,
+                          Cmin = constraints$Cmin,
+                          Nmin = constraints$Nmin,
+                          Nmin.s = constraints$Nmin.s,
+                          time.breaks = constraints$time.breaks,
+                          Fcut= c(0, 2, 12, 40, max(canjem.jdb$F_FINAL)),
+                          FWI.threshold = 1)	
+  
+  
+      result$most.freq.confidence <- ddply(result ,~ cell , function(x){c(3:1)[which.max(c(x$n.R3[1],x$n.R2[1],x$n.R1[1]))]})$V1
+      
+      result$most.freq.intensity <- ddply(result ,~ cell , function(x){c(3:1)[which.max(c(x$n.C3[1],x$n.C2[1],x$n.C1[1]))]})$V1
+      
+      result$most.freq.frequency <- ddply(result ,~ cell , function(x){c(4:1)[which.max(c(x$n.F4,x$n.F3[1],x$n.F2[1],x$n.F1[1]))]})$V1
+      
+      result$most.freq.confidence[ result$p==0] <- NA
+      result$most.freq.intensity[ result$p==0] <- NA
+      result$most.freq.frequency[ result$p==0] <- NA
+      
+      result <- result[ , c( 3:8 , 23:35 , 55 , 57:59 )  ]
+      
+      return(result)
+      
+  }
+  
+  result <- myfun( myconstraints )
+
+#'applying the JEM to a single population : a table of the CANJEM population by ISCO code
+
+#+ applying canjem to pop, include = false
+  
+   canjem.pop <- data.frame( table( canjem.wk$ISCO883D) , stringsAsFactors = FALSE)
+   
+   names(canjem.pop) <- c("ISCO883D" , "n")
+   
+   canjem.pop.cobalt <- merge( canjem.pop , result[ result$idchem=="512799" , ] , by = "ISCO883D" , all = TRUE)
+  
+        
   
