@@ -107,7 +107,6 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     #citation
     #Ganzeboom, Harry B.G.;Treiman, Donald J., “International Stratification and Mobility File: Conversion Tools.” Amsterdam: Department of Social Research Methodology, http://home.fsw.vu.nl/hbg.ganzeboom/ismf. <Date of last revision>
     
-    test <- read_spss("MONO131/CANJEM_IPUMS analysis/raw data/fromGanzeboom/isco6888.sps")
     
     isco6888.g <- read.table( "MONO131/CANJEM_IPUMS analysis/raw data/fromGanzeboom/isco6888.txt" , 
                          header = FALSE, sep = "=", dec = ".")
@@ -198,6 +197,16 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     sum( table( canjem.status ) )
     
     #### saving the final crosswalk
+    
+    mycrosswalk$isco883d <- mycrosswalk$isco88.ganz
+    
+    mycrosswalk$isco883d[ is.na(mycrosswalk$isco883d) ] <- mycrosswalk$isco88.caps[ is.na(mycrosswalk$isco883d) ]
+    
+    ##priority for caps
+    
+    mycrosswalk$isco883d[ mycrosswalk$diff.status == "UNEQUAL" ] <-  mycrosswalk$isco88.caps[  mycrosswalk$diff.status == "UNEQUAL"  ]
+    
+    
     
     saveRDS( mycrosswalk , "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.RDS")
     
