@@ -11,7 +11,6 @@
 
       library(writexl)
 
- 
       library(haven)
       
 ######### creating the crosswalks
@@ -221,7 +220,27 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     
     mycrosswalk$isco883d[ mycrosswalk$diff.status == "UNEQUAL" ] <-  mycrosswalk$isco88.caps[  mycrosswalk$diff.status == "UNEQUAL"  ]
     
+    ##### looking at the names in IPUMS
     
+    isco <- read_xlsx("MONO131/CANJEM_IPUMS analysis/raw data/fromIPUMS/isco883D.xlsx")
+    
+    # no code containing a zero at the end, except military
+    
+    # in the crosswalk : codes 410 (office employee), 310, 840 : exclusion
+    
+    mycrosswalk$diff.status [ is.element( mycrosswalk$isco883d, c("410","310","840")) ] <- "Low resolution"
+    
+    mycrosswalk$isco883d[ is.element( mycrosswalk$isco883d, c("410","310","840")) ] <- NA
+    
+
+    ### the military
+    
+    mycrosswalk$isco883d[mycrosswalk$isco68=="0-00.00"] <- "10"
+    
+    mycrosswalk$diff.status[mycrosswalk$isco68=="0-00.00"] <- "IPUMS Military"
+    
+    
+    ###### saving files
     
     saveRDS( mycrosswalk , "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.RDS")
     

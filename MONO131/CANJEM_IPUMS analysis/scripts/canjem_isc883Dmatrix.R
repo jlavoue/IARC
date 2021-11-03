@@ -43,13 +43,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
   canjem.wk$ISCO883D.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
   
-  ### adding the "armed forces" cateegory, which has a code 10 in the IPUMS data
-  
-  canjem.wk$ISCO883D[ canjem.wk$CITP1968 == "0-00.00"] <- 10
-  
-  canjem.wk$ISCO883D.status[ canjem.wk$CITP1968 == "0-00.00"] <- "IPUMS code for military"
-  
-  
+
 #' The table below describes the state of the ISCO68 to ISCO683D crosswalk, which compared the CAPS official crosswalk to the Ganzeboom crosswalk  
   
 #+ corsswalk summary, echo = FALSE    
@@ -118,5 +112,5 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
    
    canjem.pop.cobalt <- merge( canjem.pop , result[ result$idchem=="512799" , ] , by = "ISCO883D" , all = TRUE)
   
-        
+   # lininkg the      
   
