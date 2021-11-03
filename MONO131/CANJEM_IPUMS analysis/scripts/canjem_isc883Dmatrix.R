@@ -12,61 +12,55 @@
 require("knitr")
 library(stringr)
 
-library(usethis)
-library(here)
-library(httr)
-library(magrittr)
 
 ## setting working directory
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 
-#' *This script 1. creates CANJEM ISCO88_3D for Cobalt, Antimony and Tungsten according to various constraints and 2.evaluates each job in the CANJEM databases as "exposed", "unexposed" , "unknown". *
+#'*This script 1. creates CANJEM ISCO88_3D for Cobalt, Antimony and Tungsten according to various constraints and 2.evaluates each job in the CANJEM databases as "exposed", "unexposed" , "unknown".*
 
 #+ libraries and datasets, include = FALSE
        
-       usethis::edit_r_environ()
-       
-       req <- content(GET(
-         "https://api.github.com/repos/jlavoue/MontrealCaseControlStudies/CANJEMV1/contents/matrix creation/Script matrix creation v7.r",
-         add_headers(Authorization = "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")
-       ), as = "parsed")
-       
-       tmp <- tempfile()
-       r1 <- GET(req$download_url, write_disk(tmp))
-       load(tmp)
-       
-       
-       
-       
-       
-       
+  canjem.wk <- read.csv("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/canjem.workoccind.csv")   
+  
+  canjem.jdb <- read.csv("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/canjem.jdb.123.D.csv")   
+  
+  canjem.agents <- read.csv("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/CANJEM agents.csv")
+  
+  canjem.agents.def <- read.csv("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/CANJEM agents definitions.csv")
+  
+  source("MONO131/CANJEM_IPUMS analysis/raw data/from CANJEM/script matrix creation v7.R")
 
-      # Source R script from Github : CANJEM creation function
-      script <-
-        GET(
-          url = "https://api.github.com/repos/jlavoue/MontrealCaseControlStudies/CANJEMV1/contents/matrix creation/Script matrix creation v7.r",
-          authenticate("jlavoue", "Myaex7O2yN&%"),     # Instead of PAT, could use password
-          accept("application/vnd.github.v3.raw")
-        ) %>%
-        content(as = "text")
-      
-      # Evaluate and parse to global environment
-      eval(parse(text = script))
-      
-      # Source R script from Github : CANJEM creation function
-      script <-
-        GET(
-          url = "https://api.github.com/repos/jlavoue/MontrealCaseControlStudies/CANJEMV1/contents/matrix creation/Script matrix creation v7.R",
-          authenticate("jerome.lavoue@umontreal.ca", "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"),     # Instead of PAT, could use password
-          accept("application/vnd.github.v3.raw")
-        ) %>%
-        content(as = "text")
-      
-      # Evaluate and parse to global environment
-      eval(parse(text = script)
-      ### loading canjem workoccind
-      
-      canjem.wk <- read.csv(" https://raw.githubusercontent.com/MontrealCaseControlStudies/CANJEMV1/raw/master/workoccind/canjem.workoccind.csv")
-      https://raw.githubusercontent.com/MontrealCaseControlStudies/CANJEMV1/master/matrix%20creation/Script%20matrix%20creation%20v7.r?token=ACOAI3B6DG7BM3HBAWKJSELBQEI6Q
-      
+#+ creation of the JEM, include = FALSE    
+  
+  # adding the ISCO88 codes
+  
+  mycrosswalk <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.RDS")
+  
+  canjem.wk$ISCO883D <- mycrosswalk$isco88.ganz[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
+  
+  canjem.wk$ISCO883D.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
+  
+  
+#' The table below describes the state of the ISCO68 to ISCO683D crosswalk, which compared the CAPS official crosswalk to the Ganzeboom crosswalk  
+  
+#+ corsswalk summary, echo = FALSE    
+  
+  knitr::kable(data.frame(table(canjem.wk$ISCO883D.status)))
+  
+  #mymatrix <- matrix.fun( jdb = canjem.jdb[ is.element( canjem.jdb$IDCHEM , agents) ,],
+  #                        workoccind = canjem.wk,
+   #                       vec.dim = ,
+    #                      agents =  c("512799","515199","517499"),
+     #                     type='R1expo',
+      #                    Dmin,
+       #                   Fmin,
+        #                  Cmin,
+         #                 Nmin,
+          #                Nmin.s,
+           #               time.breaks,
+            #              Fcut= c(0, 2, 12, 40, max(canjem.jdb$F_FINAL)),
+             #             FWI.threshold = 1)	
+  #
+  
+  
