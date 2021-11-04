@@ -1,5 +1,5 @@
 #' ---
-#' title: "Merging CANJEM with the IPUMS international census data : Cobalt, Antimony and Tungsten"
+#' title: "Merging CANJEM with the IPUMS international census data : Cobalt, Antimony and Tungsten - global descriptive analysis"
 #' author: "Jérôme Lavoué"
 #' date: "October 20, 2021"
 #' output: github_document
@@ -15,82 +15,36 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 #+ libraries and datasets, include = FALSE
 
+    library(readxl)
+    library(plyr)
+    
     ############# reading relevant datasets
     
     ## CANJEM
     
-    cobalt <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMCobalt.RDS" )
-    cobalt$Activity.code <- str_trim( cobalt$Activity.code,  side = "both")
+    canjem.pop.cobalt <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemcobalt.RDS")
     
-    tungsten <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMtungsten.RDS" )
-    tungsten$Activity.code <- str_trim( tungsten$Activity.code,  side = "both")
+    canjem.pop.antimony <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemantimony.RDS")
     
-    antimony <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/CANJEMantimony.RDS")
-    antimony$Activity.code <- str_trim( antimony$Activity.code,  side = "both")
-    
-    
-    ## CONVERSION
-    
-    c68to88 <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS" )
-    
+    canjem.pop.tungsten <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemtungsten.RDS")
     
     ## IPUMS
     
-    readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/ipums.RDS" )
+    ipums <- readRDS( "MONO131/CANJEM_IPUMS analysis/intermediate data/ipums.RDS" )
     
-#' **Having a look at CANJEM : COBALT**
-#' 
-#' The three files presented below are publicly available from the [CANJEM public app](https://lavoue.shinyapps.io/Shiny_canjem_v3/).
-#' 
-#' The summary information for cobalt on the CANJEM website has a [perment address](http://canjem.ca/?ag=cobalt)
-#' 
-#' The tables below shows all 3-Digit ISCO68 occupations which had at least 10 jobs and at least one of them exposed to, respectively, cobalt compounds, antimony compounds, and tungsten compounds.
-#'
-#'
-#' *ISCO88 3 digit occupations with exposure to cobalt compounds*.     
-#' 
-#'  
+    isco <- read_xlsx("MONO131/CANJEM_IPUMS analysis/raw data/fromIPUMS/isco883D.xlsx")
+    
+    country <- read_xlsx("MONO131/CANJEM_IPUMS analysis/raw data/fromIPUMS/countries.xlsx")
+    
+
+ ################ descriptive analysis - IPIMS file   
         
-#+ CANJEM cobalt, echo = FALSE
-    
-    cobalt <- cobalt[ , c(1,10,3,4,5,2,6,7,8,9)]
-    
-    knitr::kable(cobalt)
-    
-#' *ISCO88 3 digit occupations with exposure to antimony compounds*.     
-#' 
-#'      
-                  
-#+ CANJEM antimony, echo = FALSE
-    
-    antimony <- antimony[ , c(1,10,3,4,5,2,6,7,8,9)]
-    
-    knitr::kable(antimony )
-#'
-#'
-#'*ISCO88 3 digit occupations with exposure to tungsten compounds*.
-#'
-#'
-    
-        
-#+ CANJEM tungsten, echo = FALSE
-    
-    tungsten <- tungsten[ , c(1,10,3,4,5,2,6,7,8,9)]
-    
-    knitr::kable(tungsten)
-    
-    
+sum(ipums$n_kpeople)/1000000
 
-#' ** Linking CANJEM occupations to ISCO 88 codes using the crosswwalks**
+mycountry <- ddply( ipums, .(country), summarize, n.M = round( sum(n_kpeople)/1000 , 0))
 
-#+ linkaege , include = FALSE
-#+ 
+mycountry$country.lab <- country$Label[ match( mycountry$country , country$Value)]
 
-  cobalt$ISCO88 <- c68to88$isco88[ match( cobalt$Activity.code , c68to88$isco68 ) ]        
-  
-  antimony$ISCO88 <- c68to88$isco88[ match( antimony$Activity.code , c68to88$isco68 ) ]        
-  
-  tungsten$ISCO88 <- c68to88$isco88[ match( tungsten$Activity.code , c68to88$isco68 ) ]        
-  
-    
+
+
         
