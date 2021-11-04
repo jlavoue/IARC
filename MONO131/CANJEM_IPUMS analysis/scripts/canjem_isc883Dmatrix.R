@@ -52,7 +52,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
 #+ creation of the JEM, include = FALSE 
   
-  canjem.wk <-  canjem.wk[ canjem.wk$ISCO883D.status != "Both missing" , ]
+  canjem.wk <-  canjem.wk[ canjem.wk$ISCO883D.status != "Low resolution" , ]
   
   canjem.wk$id.job <-paste(canjem.wk$ID,canjem.wk$JOB,sep="-")
   canjem.jdb$id.job <-paste(canjem.jdb$ID,canjem.jdb$JOB,sep="-")
@@ -111,6 +111,25 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
    names(canjem.pop) <- c("ISCO883D" , "n")
    
    canjem.pop.cobalt <- merge( canjem.pop , result[ result$idchem=="512799" , ] , by = "ISCO883D" , all = TRUE)
+   
+   canjem.pop.antimony <- merge( canjem.pop , result[ result$idchem=="515199" , ] , by = "ISCO883D" , all = TRUE)
+   
+   canjem.pop.tungsten <- merge( canjem.pop , result[ result$idchem=="517499" , ] , by = "ISCO883D" , all = TRUE)
+   
+   canjem.pop.cobalt$CANJEMOK <- !is.na( canjem.pop.cobalt$p)
+   
+   canjem.pop.antimony$CANJEMOK <- !is.na( canjem.pop.antimony$p)
+   
+   canjem.pop.tungsten$CANJEMOK <- !is.na( canjem.pop.tungsten$p)
   
-   # lininkg the      
+   # saving files
+   
+   saveRDS( canjem.pop.cobalt , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemcobalt.RDS")
+   
+   saveRDS( canjem.pop.antimony , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemantimony.RDS")
+   
+   saveRDS( canjem.pop.tungsten , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemtungsten.RDS")
+   
+   
+   
   
