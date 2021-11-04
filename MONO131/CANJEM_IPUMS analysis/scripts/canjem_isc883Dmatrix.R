@@ -44,7 +44,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   canjem.wk$ISCO883D.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
   
 
-#' The table below describes the state of the ISCO68 to ISCO683D crosswalk as applied to the CANJEM population. "low resolution" was excluded because the ISCO codes in the crosswalk were 2-digit codes  
+#' The table below describes the state of the ISCO68 to ISCO683D crosswalk as applied to the CANJEM population. "low resolution" was excluded because the ISCO codes in the crosswalk were 2-digit codes. EQUAL means the CAPS and GANZEBOOM codes were the same, UNEQUAL that they were different ( CAPS preferred ), CAPS MISSING : we had only the Ganzeboom proposal and kept it.
   
 #+ corsswalk summary, echo = FALSE    
   
@@ -103,7 +103,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 #+ applying canjem to pop, include = FALSE
   
-   canjem.pop <- data.frame( table( canjem.wk$ISCO883D) , stringsAsFactors = FALSE)
+   canjem.pop <- data.frame( table( canjem.wk$ISCO883D) , stringsAsFactors = FALSE) # this will exclude the "low resolution" codes
    
    names(canjem.pop) <- c("ISCO883D" , "n")
    
@@ -147,11 +147,39 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
    
    saveRDS( canjem.pop.tungsten , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemtungsten.RDS")
    
-#' the table below describes the exposure status of the CANBJEM population : potentially expoosed if occupation as a probability of exposure >=5%, unexposed if p<5, and "unknown" in case of no CANJEM cell.
+#'The tables below describe the exposure status of the CANBJEM population ( jobs held by subjects ): potentially exposed if occupation has a probability of exposure >=5%, unexposed if p<5%, and "unknown" in case of no relevant CANJEM cell.
 #' 
   
-   #+ description of exposure status, include = FALSE
+#+ description of exposure status, echo = FALSE
    
-     
-   canjem.status.cobalt <- canjem.pop.cobalt$exposed[ match( canjem.wk$ISCO883D , canjem.pop.cobalt$ISCO883D )]
-  
+
+#'**COBALT** 
+#'
+#+ description of exposure status for cobalt, echo = FALSE
+   
+   canjem.status.cobalt <- rep( "unknown" , length(canjem.wk[,1]) )
+   
+   canjem.status.cobalt[ !is.na(canjem.wk$ISCO883D)] <- canjem.pop.cobalt$exposed[ match( canjem.wk$ISCO883D[ !is.na(canjem.wk$ISCO883D)] , canjem.pop.cobalt$ISCO883D )]
+   
+   knitr::kable(data.frame(table(canjem.status.cobalt)))
+   
+#'**ANTIMONY** 
+#'
+#+ description of exposure status for antimony, echo = FALSE
+   
+   canjem.status.antimony <- rep( "unknown" , length(canjem.wk[,1]) )
+   
+   canjem.status.antimony[ !is.na(canjem.wk$ISCO883D)] <- canjem.pop.antimony$exposed[ match( canjem.wk$ISCO883D[ !is.na(canjem.wk$ISCO883D)] , canjem.pop.antimony$ISCO883D )]
+   
+   knitr::kable(data.frame(table(canjem.status.antimony))) 
+   
+   
+#'**TUNGSTEN** 
+#'
+#+ description of exposure status for tungsten, echo = FALSE
+   
+   canjem.status.tungsten <- rep( "unknown" , length(canjem.wk[,1]) )
+   
+   canjem.status.tungsten[ !is.na(canjem.wk$ISCO883D)] <- canjem.pop.tungsten$exposed[ match( canjem.wk$ISCO883D[ !is.na(canjem.wk$ISCO883D)] , canjem.pop.tungsten$ISCO883D )]
+   
+   knitr::kable(data.frame(table(canjem.status.tungsten)))    
