@@ -7,13 +7,14 @@ November 2nd, 2021
 Tungsten according to various constraints and 2.evaluates each job in
 the CANJEM databases as “exposed”, “unexposed” , “unknown”.*
 
-The table below describes the state of the ISCO68 to ISCO683D crosswalk,
-which compared the CAPS official crosswalk to the Ganzeboom crosswalk
+The table below describes the state of the ISCO68 to ISCO683D crosswalk
+as applied to the CANJEM population. “low resolution” was excluded
+because the ISCO codes in the crosswalk were 2-digit codes
 
-| Var1         |  Freq |
-|:-------------|------:|
-| Both missing |   840 |
-| CAPS missing |  9096 |
-| EQUAL        | 15452 |
-| Ganz missing |    91 |
-| UNEQUAL      |  6194 |
+| Var1           |  Freq |
+|:---------------|------:|
+| CAPS missing   |  8356 |
+| EQUAL          | 15458 |
+| IPUMS Military |   802 |
+| Low resolution |   778 |
+| UNEQUAL        |  6279 |
