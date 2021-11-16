@@ -41,7 +41,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
         
 sum(ipums$n_kpeople)/1000000
 
-mycountry <- ddply( ipums, .(country), summarize, n.M = round( sum(n_kpeople)/1000 , 0))
+mycountry <- ddply( ipums, .(country), summarize, n.M = round( sum(n_kpeople)/1000000 , 0))
 
 mycountry$country.lab <- country$Label[ match( mycountry$country , country$Value)]
 
