@@ -66,10 +66,26 @@ population by country
 
 *COBALT*
 
-| ISCO883D |   n | ntot | nsub | nexp | nexp.s | most.freq.confidence | most.freq.intensity | most.freq.frequency |
-|:---------|----:|-----:|-----:|-----:|-------:|---------------------:|--------------------:|--------------------:|
-| 722      | 309 |  309 |  210 |   59 |     39 |                    2 |                   3 |                   2 |
-| 731      | 115 |  115 |   82 |   14 |      9 |                    2 |                   2 |                   1 |
-| 816      | 151 |  151 |  105 |   17 |     17 |                    2 |                   1 |                   2 |
-| 821      | 392 |  392 |  302 |   31 |     28 |                    2 |                   2 |                   2 |
-| 815      | 115 |  115 |  102 |    7 |      5 |                    2 |                   1 |                   2 |
+| ISCO88 | Title                                               | n.jobs |    p | confodence | intensity | frequency |
+|:-------|:----------------------------------------------------|-------:|-----:|:-----------|:----------|:----------|
+| 722    | Blacksmiths, tool-makers and related trades workers |    309 | 19.0 | probable   | high      | 2-12h     |
+| 731    | Precision workers in metal and related materials    |    115 | 12.0 | probable   | medium    | \<2h      |
+| 816    | Power-production and related plant operators        |    151 | 11.0 | probable   | low       | 2-12h     |
+| 821    | Metal- and mineral-products machine operators       |    392 |  7.9 | probable   | medium    | 2-12h     |
+| 815    | Chemical-processing-plant operators                 |    115 |  6.1 | probable   | low       | 2-12h     |
+
+| ISCO88 | Title                                                    | n.jobs |    p | confodence | intensity | frequency |
+|:-------|:---------------------------------------------------------|-------:|-----:|:-----------|:----------|:----------|
+| 816    | Power-production and related plant operators             |    151 | 31.0 | possible   | low       | 2-12h     |
+| 734    | Printing and related trades workers                      |    133 | 25.0 | definite   | medium    | 40h+      |
+| 825    | Printing-, binding- and paper-products machine operators |    187 | 11.0 | definite   | low       | 40h+      |
+| 812    | Metal-processing-plant operators                         |    158 |  6.3 | probable   | low       | 40h+      |
+| 815    | Chemical-processing-plant operators                      |    115 |  2.6 | possible   | low       | 2-12h     |
+
+| ISCO88 | Title                                                     | n.jobs |     p | confodence | intensity | frequency |
+|:-------|:----------------------------------------------------------|-------:|------:|:-----------|:----------|:----------|
+| 722    | Blacksmiths, tool-makers and related trades workers       |    309 | 24.00 | probable   | high      | 2-12h     |
+| 821    | Metal- and mineral-products machine operators             |    392 |  8.40 | probable   | medium    | 2-12h     |
+| 312    | Computer associate professionals                          |     57 |  1.80 | definite   | low       | 2-12h     |
+| 315    | Safety and quality inspectors                             |    203 |  0.49 | possible   | low       | 40h+      |
+| 724    | Electrical and electronic equipment mechanics and fitters |    240 |  0.42 | possible   | low       | 2-12h     |

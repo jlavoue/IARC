@@ -130,4 +130,12 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
      
      canjem.pop.tungsten$p <- signif( canjem.pop.tungsten$p , 2 ) 
      
-     knitr::kable( canjem.pop.tungsten , row.names = FALSE)        
+     knitr::kable( canjem.pop.tungsten , row.names = FALSE)  
+     
+     
+     
+#' **IPUMS analysis : portrait by country**
+#'
+
+     
+     
