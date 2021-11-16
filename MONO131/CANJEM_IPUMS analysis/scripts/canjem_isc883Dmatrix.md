@@ -1,7 +1,7 @@
 Creation of the ISCO-3D CANJEM for Cobalt, Antimony and Tungsten
 ================
 Jérôme Lavoué
-November 2nd, 2021
+November 16th, 2021
 
 *This script 1. creates CANJEM ISCO88_3D for Cobalt, Antimony and
 Tungsten according to various constraints and 2.evaluates each job in
@@ -9,17 +9,19 @@ the CANJEM databases as “exposed”, “unexposed” , “unknown”.*
 
 The table below describes the state of the ISCO68 to ISCO683D crosswalk
 as applied to the CANJEM population. “low resolution” was excluded
-because the ISCO codes in the crosswalk were 2-digit codes. EQUAL means
-the CAPS and GANZEBOOM codes were the same, UNEQUAL that they were
-different ( CAPS preferred ), CAPS MISSING : we had only the Ganzeboom
-proposal and kept it.
+because the ISCO codes in the crosswalk were 2-digit codes.
+“supervisors” was excluded because this status does not have a code in
+ISCO88.EQUAL means the CAPS and GANZEBOOM codes were the same, UNEQUAL
+that they were different ( CAPS preferred ), CAPS MISSING : we had only
+the Ganzeboom proposal and kept it.
 
 | Var1           |  Freq |
 |:---------------|------:|
-| CAPS missing   |  8356 |
+| CAPS missing   |  7776 |
 | EQUAL          | 15458 |
 | IPUMS Military |   802 |
 | Low resolution |   778 |
+| supervisors    |   580 |
 | UNEQUAL        |  6279 |
 
 The tables below describe the exposure status of the CANBJEM population
@@ -32,21 +34,21 @@ of no relevant CANJEM cell.
 | canjem.status.cobalt |  Freq |
 |:---------------------|------:|
 | pot.exposed          |  1269 |
-| unexposed            | 29596 |
-| unknown              |   808 |
+| unexposed            | 29016 |
+| unknown              |  1388 |
 
 **ANTIMONY**
 
 | canjem.status.antimony |  Freq |
 |:-----------------------|------:|
 | pot.exposed            |   629 |
-| unexposed              | 30236 |
-| unknown                |   808 |
+| unexposed              | 29656 |
+| unknown                |  1388 |
 
 **TUNGSTEN**
 
 | canjem.status.tungsten |  Freq |
 |:-----------------------|------:|
 | pot.exposed            |   701 |
-| unexposed              | 30164 |
-| unknown                |   808 |
+| unexposed              | 29584 |
+| unknown                |  1388 |

@@ -1,7 +1,7 @@
 #' ---
 #' title: "Creation of the ISCO-3D CANJEM for Cobalt, Antimony and Tungsten"
 #' author: "Jérôme Lavoué"
-#' date: "November 2nd, 2021"
+#' date: "November 16th, 2021"
 #' output: github_document
 #' ---
 #' 
@@ -44,7 +44,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   canjem.wk$ISCO883D.status <- mycrosswalk$diff.status[ match( canjem.wk$CITP1968 , mycrosswalk$isco68)]
   
 
-#' The table below describes the state of the ISCO68 to ISCO683D crosswalk as applied to the CANJEM population. "low resolution" was excluded because the ISCO codes in the crosswalk were 2-digit codes. EQUAL means the CAPS and GANZEBOOM codes were the same, UNEQUAL that they were different ( CAPS preferred ), CAPS MISSING : we had only the Ganzeboom proposal and kept it.
+#' The table below describes the state of the ISCO68 to ISCO683D crosswalk as applied to the CANJEM population. "low resolution" was excluded because the ISCO codes in the crosswalk were 2-digit codes. "supervisors" was excluded because this status does not have a code in ISCO88.EQUAL means the CAPS and GANZEBOOM codes were the same, UNEQUAL that they were different ( CAPS preferred ), CAPS MISSING : we had only the Ganzeboom proposal and kept it.
   
 #+ corsswalk summary, echo = FALSE    
   
@@ -69,7 +69,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     
 
       result <- matrix.fun( jdb = canjem.jdb[ is.element( canjem.jdb$IDCHEM , constraints$agents ) ,],
-                          workoccind = canjem.wk[ canjem.wk$ISCO883D.status != "Low resolution" , ],
+                          workoccind = canjem.wk[ canjem.wk$ISCO883D.status != "Low resolution" & canjem.wk$ISCO883D.status !="supervisors", ],
                           vec.dim = "ISCO883D" ,
                           agents =  constraints$agents,
                           type='R1expo',
@@ -103,7 +103,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 #+ applying canjem to pop, include = FALSE
   
-   canjem.pop <- data.frame( table( canjem.wk$ISCO883D) , stringsAsFactors = FALSE) # this will exclude the "low resolution" codes
+   canjem.pop <- data.frame( table( canjem.wk$ISCO883D) , stringsAsFactors = FALSE) # this will exclude the "low resolution" and "supervisor" codes
    
    names(canjem.pop) <- c("ISCO883D" , "n")
    

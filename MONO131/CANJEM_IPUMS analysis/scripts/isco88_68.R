@@ -240,6 +240,13 @@ saveRDS( c68to88 , "MONO131/CANJEM_IPUMS analysis/intermediate data/c68to88.RDS"
     mycrosswalk$diff.status[mycrosswalk$isco68=="0-00.00"] <- "IPUMS Military"
     
     
+    ### ISCO88 751 (foremen) does not exist : exclusion
+    
+
+    mycrosswalk$diff.status[mycrosswalk$isco883d=="751"] <- "supervisors"
+    
+    mycrosswalk$isco883d[mycrosswalk$isco883d=="751"] <- NA
+    
     ###### saving files
     
     saveRDS( mycrosswalk , "MONO131/CANJEM_IPUMS analysis/intermediate data/isco68to88V1.RDS")
