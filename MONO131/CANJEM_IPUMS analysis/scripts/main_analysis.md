@@ -160,60 +160,6 @@ population by country
 
 *Cobalt*
 
-``` r
-     selected.country <- 250
-       
-     country.tab.cobalt <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
-     
-     country.tab.cobalt$isco.lab <- isco$Label[ match( country.tab.cobalt$isco88 , isco$Value)]
-     
-     country.tab.cobalt <- country.tab.cobalt[ !is.element( country.tab.cobalt$isco88 , c(998,999) )   ,  ]
-     
-     country.tab.cobalt$n.people <- signif( ipums$n_people[ ipums$country == selected.country ][ match( country.tab.cobalt$isco88 ,ipums$isco88a[ ipums$country == selected.country ] )] , 3)
-     
-     country.tab.cobalt$estatus <- canjem.pop.cobalt$exposed[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D)]
-     
-     country.tab.cobalt$estatus[ is.na(country.tab.cobalt$estatus)] <- "unknown"
-     
-     country.tab.cobalt$p.exp <- canjem.pop.cobalt$p[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D)]
-     
-          country.tab.cobalt$p.exp[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-     
-    country.tab.cobalt$n.low <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.C1[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-          country.tab.cobalt$n.low[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-     
-    country.tab.cobalt$n.medium <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.C2[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-          country.tab.cobalt$n.medium[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-     
-    country.tab.cobalt$n.high <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.C3[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-          country.tab.cobalt$n.high[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-     
-    country.tab.cobalt$most.freq.confidence <- ifelse(country.tab.cobalt$estatus == "pot.exposed", 
-                                                        confidence$label[ match( canjem.pop.cobalt$most.freq.confidence[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ] , confidence$code ) ],
-                                                        NA)
-     
-    country.tab.cobalt$n.lessthan2h <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.F1[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-    country.tab.cobalt$n.lessthan2h[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-    
-    country.tab.cobalt$n.2_12h <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.F2[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-    country.tab.cobalt$n.2_12h[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-    
-    country.tab.cobalt$n.12_39h <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.F3[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-    country.tab.cobalt$n.12_39h[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-    
-    country.tab.cobalt$n.40handover <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.F4[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
-    
-    country.tab.cobalt$n.40handover[ country.tab.cobalt$estatus == "unexposed" ] <- 0
-    
-    knitr::kable( country.tab.cobalt[ order( country.tab.cobalt$p.exp , decreasing = TRUE )[ 1:5] , ] , row.names = FALSE) 
-```
-
 | isco88 | isco.lab                                            | n.people | estatus     |     p.exp | n.low | n.medium | n.high | most.freq.confidence | n.lessthan2h | n.2_12h | n.12_39h | n.40handover |
 |-------:|:----------------------------------------------------|---------:|:------------|----------:|------:|---------:|-------:|:---------------------|-------------:|--------:|---------:|-------------:|
 |    722 | Blacksmiths, tool-makers and related trades workers |   200000 | pot.exposed | 19.093851 | 12000 |     5200 |  21000 | probable             |            0 |   36000 |      650 |         1300 |
@@ -221,38 +167,6 @@ population by country
 |    816 | Power-production and related plant operators        |    11800 | pot.exposed | 11.258278 |  1300 |        0 |      0 | probable             |            0 |    1300 |        0 |            0 |
 |    821 | Metal- and mineral-products machine operators       |    69200 | pot.exposed |  7.908163 |  2300 |     3000 |    180 | probable             |          350 |    4200 |        0 |          880 |
 |    815 | Chemical-processing-plant operators                 |   174000 | pot.exposed |  6.086957 |  7600 |     3000 |      0 | probable             |            0 |   11000 |        0 |            0 |
-
-``` r
-    ## global portrait
-    
-    country.overall.cobalt <- data.frame( metric = c("total.n" , "P.exp" , "P.unexp" ,"P.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
-    
-    country.overall.cobalt$value[1] <- signif(sum(country.tab.cobalt$n.people),3)
-    
-    country.overall.cobalt$value[2] <- signif( 100*sum(country.tab.cobalt$n.people[ country.tab.cobalt$estatus == "pot.exposed"] * country.tab.cobalt$p.exp[ country.tab.cobalt$estatus == "pot.exposed"]/100)/country.overall.cobalt$value[1]  , 3)
-    
-    country.overall.cobalt$value[3] <- signif( 100* ( sum(country.tab.cobalt$n.people[ country.tab.cobalt$estatus=="unexposed" ]) + 
-                                                        sum(country.tab.cobalt$n.people[ country.tab.cobalt$estatus == "pot.exposed"])-
-                                                        sum(country.tab.cobalt$n.people[ country.tab.cobalt$estatus == "pot.exposed"] * country.tab.cobalt$p.exp[ country.tab.cobalt$estatus == "pot.exposed"]/100)) / country.overall.cobalt$value[1]  , 3)
-    
-    country.overall.cobalt$value[4] <- signif( 100*sum(country.tab.cobalt$n.people[ country.tab.cobalt$estatus == "unknown"])/country.overall.cobalt$value[1]  , 3)
-    
-    country.overall.cobalt$value[5] <- signif( sum( country.tab.cobalt$n.low , na.rm = TRUE ) , 3)
-    
-    country.overall.cobalt$value[6] <- signif( sum( country.tab.cobalt$n.medium , na.rm = TRUE  ) , 3)
-    
-    country.overall.cobalt$value[7] <- signif( sum( country.tab.cobalt$n.high , na.rm = TRUE  ) , 3)
-    
-    country.overall.cobalt$value[8] <- signif( sum( country.tab.cobalt$n.lessthan2h , na.rm = TRUE  ) , 3)
-    
-    country.overall.cobalt$value[9] <- signif( sum( country.tab.cobalt$n.2_12h , na.rm = TRUE  ) , 3)
-    
-    country.overall.cobalt$value[10] <- signif( sum( country.tab.cobalt$n.12_39h , na.rm = TRUE  ) , 3)
-    
-    country.overall.cobalt$value[11] <- signif( sum( country.tab.cobalt$n.40handover , na.rm = TRUE  ) , 3)
-    
-    knitr::kable( country.overall.cobalt , row.names = FALSE) 
-```
 
 | metric       |    value |
 |:-------------|---------:|
@@ -270,60 +184,6 @@ population by country
 
 *Antimony*
 
-``` r
-    selected.country <- 250
-    
-    country.tab.antimony <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
-    
-    country.tab.antimony$isco.lab <- isco$Label[ match( country.tab.antimony$isco88 , isco$Value)]
-    
-    country.tab.antimony <- country.tab.antimony[ !is.element( country.tab.antimony$isco88 , c(998,999) )   ,  ]
-    
-    country.tab.antimony$n.people <- signif( ipums$n_people[ ipums$country == selected.country ][ match( country.tab.antimony$isco88 ,ipums$isco88a[ ipums$country == selected.country ] )] ,3)
-    
-    country.tab.antimony$estatus <- canjem.pop.antimony$exposed[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D)]
-    
-    country.tab.antimony$estatus[ is.na(country.tab.antimony$estatus)] <- "unknown"
-    
-    country.tab.antimony$p.exp <- canjem.pop.antimony$p[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D)]
-    
-    country.tab.antimony$p.exp[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$n.low <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.C1[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.low[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$n.medium <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.C2[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.medium[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$n.high <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.C3[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.high[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$most.freq.confidence <- ifelse(country.tab.antimony$estatus == "pot.exposed", 
-                                                      confidence$label[ match( canjem.pop.antimony$most.freq.confidence[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ] , confidence$code ) ],
-                                                      NA)
-    
-    country.tab.antimony$n.lessthan2h <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.F1[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.lessthan2h[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$n.2_12h <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.F2[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.2_12h[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$n.12_39h <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.F3[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.12_39h[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    country.tab.antimony$n.40handover <- signif(country.tab.antimony$n.people*canjem.pop.antimony$p.F4[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 , 2 )
-    
-    country.tab.antimony$n.40handover[ country.tab.antimony$estatus == "unexposed" ] <- 0
-    
-    knitr::kable( country.tab.antimony[ order( country.tab.antimony$p.exp , decreasing = TRUE )[ 1:5] , ] , row.names = FALSE) 
-```
-
 | isco88 | isco.lab                                                 | n.people | estatus     |     p.exp | n.low | n.medium | n.high | most.freq.confidence | n.lessthan2h | n.2_12h | n.12_39h | n.40handover |
 |-------:|:---------------------------------------------------------|---------:|:------------|----------:|------:|---------:|-------:|:---------------------|-------------:|--------:|---------:|-------------:|
 |    816 | Power-production and related plant operators             |    11800 | pot.exposed | 31.125828 |  3700 |        0 |      0 | possible             |            0 |    3700 |        0 |            0 |
@@ -331,38 +191,6 @@ population by country
 |    825 | Printing-, binding- and paper-products machine operators |    75000 | pot.exposed | 11.229947 |  7600 |      800 |      0 | definite             |            0 |    2400 |      400 |         5600 |
 |    812 | Metal-processing-plant operators                         |    84900 | pot.exposed |  6.329114 |  3800 |      540 |   1100 | probable             |            0 |    2700 |        0 |         2700 |
 |    815 | Chemical-processing-plant operators                      |   174000 | pot.exposed |  2.608696 |  4500 |        0 |      0 | possible             |            0 |    4500 |        0 |            0 |
-
-``` r
-    ## global portrait
-    
-    country.overall.antimony <- data.frame( metric = c("total.n" , "P.exp" , "P.unexp" ,"P.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
-    
-    country.overall.antimony$value[1] <- signif( sum(country.tab.antimony$n.people) )
-    
-    country.overall.antimony$value[2] <- signif( 100*sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "pot.exposed"] * country.tab.antimony$p.exp[ country.tab.antimony$estatus == "pot.exposed"]/100)/country.overall.antimony$value[1]  , 3)
-    
-    country.overall.antimony$value[3] <- signif( 100* ( sum(country.tab.antimony$n.people[ country.tab.antimony$estatus=="unexposed" ]) + 
-                                                        sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "pot.exposed"])-
-                                                        sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "pot.exposed"] * country.tab.antimony$p.exp[ country.tab.antimony$estatus == "pot.exposed"]/100)) / country.overall.antimony$value[1]  , 3)
-    
-    country.overall.antimony$value[4] <- signif( 100*sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "unknown"])/country.overall.antimony$value[1]  , 3)
-    
-    country.overall.antimony$value[5] <- signif( sum( country.tab.antimony$n.low , na.rm = TRUE ) , 3)
-    
-    country.overall.antimony$value[6] <- signif( sum( country.tab.antimony$n.medium , na.rm = TRUE  ) , 3)
-    
-    country.overall.antimony$value[7] <- signif( sum( country.tab.antimony$n.high , na.rm = TRUE  ) , 3)
-    
-    country.overall.antimony$value[8] <- signif( sum( country.tab.antimony$n.lessthan2h , na.rm = TRUE  ) , 3)
-    
-    country.overall.antimony$value[9] <- signif( sum( country.tab.antimony$n.2_12h , na.rm = TRUE  ) , 3)
-    
-    country.overall.antimony$value[10] <- signif( sum( country.tab.antimony$n.12_39h , na.rm = TRUE  ) , 3)
-    
-    country.overall.antimony$value[11] <- signif( sum( country.tab.antimony$n.40handover , na.rm = TRUE  ) , 3)
-    
-    knitr::kable( country.overall.antimony , row.names = FALSE) 
-```
 
 | metric       |      value |
 |:-------------|-----------:|
@@ -380,60 +208,6 @@ population by country
 
 *Tungsten*
 
-``` r
-    selected.country <- 250
-    
-    country.tab.tungsten <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
-    
-    country.tab.tungsten$isco.lab <- isco$Label[ match( country.tab.tungsten$isco88 , isco$Value)]
-    
-    country.tab.tungsten <- country.tab.tungsten[ !is.element( country.tab.tungsten$isco88 , c(998,999) )   ,  ]
-    
-    country.tab.tungsten$n.people <- signif( ipums$n_people[ ipums$country == selected.country ][ match( country.tab.tungsten$isco88 ,ipums$isco88a[ ipums$country == selected.country ] )] , 3)
-    
-    country.tab.tungsten$estatus <- canjem.pop.tungsten$exposed[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D)]
-    
-    country.tab.tungsten$estatus[ is.na(country.tab.tungsten$estatus)] <- "unknown"
-    
-    country.tab.tungsten$p.exp <- canjem.pop.tungsten$p[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D)]
-    
-    country.tab.tungsten$p.exp[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$n.low <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.C1[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.low[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$n.medium <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.C2[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.medium[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$n.high <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.C3[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.high[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$most.freq.confidence <- ifelse(country.tab.tungsten$estatus == "pot.exposed", 
-                                                      confidence$label[ match( canjem.pop.tungsten$most.freq.confidence[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ] , confidence$code ) ],
-                                                      NA)
-    
-    country.tab.tungsten$n.lessthan2h <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.F1[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.lessthan2h[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$n.2_12h <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.F2[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.2_12h[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$n.12_39h <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.F3[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.12_39h[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    country.tab.tungsten$n.40handover <- signif(country.tab.tungsten$n.people*canjem.pop.tungsten$p.F4[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 , 2 )
-    
-    country.tab.tungsten$n.40handover[ country.tab.tungsten$estatus == "unexposed" ] <- 0
-    
-    knitr::kable( country.tab.tungsten[ order( country.tab.tungsten$p.exp , decreasing = TRUE )[ 1:5] , ] , row.names = FALSE) 
-```
-
 | isco88 | isco.lab                                                         | n.people | estatus     |     p.exp | n.low | n.medium | n.high | most.freq.confidence | n.lessthan2h | n.2_12h | n.12_39h | n.40handover |
 |-------:|:-----------------------------------------------------------------|---------:|:------------|----------:|------:|---------:|-------:|:---------------------|-------------:|--------:|---------:|-------------:|
 |    722 | Blacksmiths, tool-makers and related trades workers              |   200000 | pot.exposed | 24.271845 | 16000 |    15000 |  18000 | probable             |         2600 |   40000 |     2600 |         3200 |
@@ -441,38 +215,6 @@ population by country
 |    312 | Computer associate professionals                                 |   135000 | pot.exposed |  1.754386 |  2400 |        0 |      0 | definite             |            0 |    2400 |        0 |            0 |
 |    714 | Painters, building structure cleaners and related trades workers |   129000 | unexposed   |  0.000000 |     0 |        0 |      0 | NA                   |            0 |       0 |        0 |            0 |
 |    713 | Building finishers and related trades workers                    |   446000 | unexposed   |  0.000000 |     0 |        0 |      0 | NA                   |            0 |       0 |        0 |            0 |
-
-``` r
-    ## global portrait
-    
-    country.overall.tungsten <- data.frame( metric = c("total.n" , "P.exp" , "P.unexp" ,"P.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
-    
-    country.overall.tungsten$value[1] <- signif( sum(country.tab.tungsten$n.people) , 3)
-    
-    country.overall.tungsten$value[2] <- signif( 100*sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "pot.exposed"] * country.tab.tungsten$p.exp[ country.tab.tungsten$estatus == "pot.exposed"]/100)/country.overall.tungsten$value[1]  , 3)
-    
-    country.overall.tungsten$value[3] <- signif( 100* ( sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus=="unexposed" ]) + 
-                                                        sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "pot.exposed"])-
-                                                        sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "pot.exposed"] * country.tab.tungsten$p.exp[ country.tab.tungsten$estatus == "pot.exposed"]/100)) / country.overall.tungsten$value[1]  , 3)
-    
-    country.overall.tungsten$value[4] <- signif( 100*sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "unknown"])/country.overall.tungsten$value[1]  , 3)
-    
-    country.overall.tungsten$value[5] <- signif( sum( country.tab.tungsten$n.low , na.rm = TRUE ) , 3)
-    
-    country.overall.tungsten$value[6] <- signif( sum( country.tab.tungsten$n.medium , na.rm = TRUE  ) , 3)
-    
-    country.overall.tungsten$value[7] <- signif( sum( country.tab.tungsten$n.high , na.rm = TRUE  ) , 3)
-    
-    country.overall.tungsten$value[8] <- signif( sum( country.tab.tungsten$n.lessthan2h , na.rm = TRUE  ) , 3)
-    
-    country.overall.tungsten$value[9] <- signif( sum( country.tab.tungsten$n.2_12h , na.rm = TRUE  ) , 3)
-    
-    country.overall.tungsten$value[10] <- signif( sum( country.tab.tungsten$n.12_39h , na.rm = TRUE  ) , 3)
-    
-    country.overall.tungsten$value[11] <- signif( sum( country.tab.tungsten$n.40handover , na.rm = TRUE  ) , 3)
-    
-    knitr::kable( country.overall.tungsten , row.names = FALSE)     
-```
 
 | metric       |    value |
 |:-------------|---------:|

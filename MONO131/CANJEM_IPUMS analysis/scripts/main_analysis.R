@@ -334,10 +334,10 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 #' **IPUMS analysis : portrait by country**
 #'
 #' *Cobalt*
-#' 
+
      
 #+ country cobalt, echo = FALSE  
-#+ 
+ 
      selected.country <- 250
        
      country.tab.cobalt <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
@@ -424,7 +424,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 #' 
     
 #+ country antimony, echo = FALSE  
-#+ 
+
     selected.country <- 250
     
     country.tab.antimony <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
@@ -513,7 +513,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 #' 
     
 #+ country tungsten, echo = FALSE  
-#+ 
+
     selected.country <- 250
     
     country.tab.tungsten <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
