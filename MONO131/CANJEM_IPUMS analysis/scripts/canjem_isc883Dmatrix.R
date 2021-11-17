@@ -119,25 +119,25 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
    
    canjem.pop.tungsten$CANJEMOK <- !is.na( canjem.pop.tungsten$p)
    
-   ## pot.exposed / unexposed / unknown
+   ## pot.exposed / unexposed / unknown (unexposed if p<1%)
    
    canjem.pop.cobalt$exposed <- "unknown"
    
-   canjem.pop.cobalt$exposed[ canjem.pop.cobalt$CANJEMOK & canjem.pop.cobalt$p >= 5 ] <- "pot.exposed"
+   canjem.pop.cobalt$exposed[ canjem.pop.cobalt$CANJEMOK & canjem.pop.cobalt$p >= 1 ] <- "pot.exposed"
    
-   canjem.pop.cobalt$exposed[ canjem.pop.cobalt$CANJEMOK & canjem.pop.cobalt$p <5 ] <- "unexposed"
+   canjem.pop.cobalt$exposed[ canjem.pop.cobalt$CANJEMOK & canjem.pop.cobalt$p <1 ] <- "unexposed"
    
    canjem.pop.antimony$exposed <- "unknown"
    
-   canjem.pop.antimony$exposed[ canjem.pop.antimony$CANJEMOK & canjem.pop.antimony$p >= 5 ] <- "pot.exposed"
+   canjem.pop.antimony$exposed[ canjem.pop.antimony$CANJEMOK & canjem.pop.antimony$p >= 1 ] <- "pot.exposed"
    
-   canjem.pop.antimony$exposed[ canjem.pop.antimony$CANJEMOK & canjem.pop.antimony$p <5 ] <- "unexposed"
+   canjem.pop.antimony$exposed[ canjem.pop.antimony$CANJEMOK & canjem.pop.antimony$p <1 ] <- "unexposed"
    
    canjem.pop.tungsten$exposed <- "unknown"
    
-   canjem.pop.tungsten$exposed[ canjem.pop.tungsten$CANJEMOK & canjem.pop.tungsten$p >= 5 ] <- "pot.exposed"
+   canjem.pop.tungsten$exposed[ canjem.pop.tungsten$CANJEMOK & canjem.pop.tungsten$p >= 1 ] <- "pot.exposed"
    
-   canjem.pop.tungsten$exposed[ canjem.pop.tungsten$CANJEMOK & canjem.pop.tungsten$p <5 ] <- "unexposed"
+   canjem.pop.tungsten$exposed[ canjem.pop.tungsten$CANJEMOK & canjem.pop.tungsten$p <1 ] <- "unexposed"
   
    # saving files
    

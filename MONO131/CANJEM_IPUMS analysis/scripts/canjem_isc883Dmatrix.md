@@ -33,22 +33,22 @@ of no relevant CANJEM cell.
 
 | canjem.status.cobalt |  Freq |
 |:---------------------|------:|
-| pot.exposed          |  1269 |
-| unexposed            | 29016 |
+| pot.exposed          |  1644 |
+| unexposed            | 28641 |
 | unknown              |  1388 |
 
 **ANTIMONY**
 
 | canjem.status.antimony |  Freq |
 |:-----------------------|------:|
-| pot.exposed            |   629 |
-| unexposed              | 29656 |
+| pot.exposed            |  1146 |
+| unexposed              | 29139 |
 | unknown                |  1388 |
 
 **TUNGSTEN**
 
 | canjem.status.tungsten |  Freq |
 |:-----------------------|------:|
-| pot.exposed            |   701 |
-| unexposed              | 29584 |
+| pot.exposed            |   758 |
+| unexposed              | 29527 |
 | unknown                |  1388 |
