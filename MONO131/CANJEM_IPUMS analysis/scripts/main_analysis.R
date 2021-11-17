@@ -55,6 +55,12 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
           
   sum(ipums$n_people)/1000000
   
+#'working population covered in millions
+  
+#+ workingtotpop , echo = FALSE
+  
+  sum(ipums$n_people[ ipums$isco88a != 999])/1000000  
+  
 #'#number of countries
 
 #+ n countries , echo = FALSE
@@ -65,11 +71,13 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 #+ by country , echo = FALSE  
 
-  mycountry <- ddply( ipums, .(country), summarize, n.M = round( sum(n_people)/1000000 , 2))
+  mycountry <- ddply( ipums[ ipums$isco88a != 999 , ], .(country), summarize, n.M = round( sum(n_people)/1000000 , 2))
   
   mycountry$country.lab <- country$Label[ match( mycountry$country , country$Value)]
 
   mycountry <- mycountry[ order( mycountry$n.M , decreasing = TRUE ), c(1,3,2)]
+  
+  mycountry$year <- ipums$year[ match( mycountry$country , ipums$country)]
   
   knitr::kable( mycountry , row.names = FALSE)
 
@@ -323,4 +331,40 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
      knitr::kable( occup.overall.tungsten , row.names = FALSE) 
      
      
-          
+#' **IPUMS analysis : portrait by country**
+#'
+#' *Cobalt*
+#' 
+     
+#+ country cobalt, echo = FALSE  
+#+ 
+     selected.country <- 250
+       
+     country.tab.cobalt <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
+     
+     country.tab.cobalt$isco.lab <- isco$Label[ match( country.tab.cobalt$isco88 , isco$Value)]
+     
+     country.tab.cobalt <- country.tab.cobalt[ !is.element( country.tab.cobalt$isco88 , c(998,999) )   ,  ]
+     
+     country.tab.cobalt$n.people <- ipums$n_people[ ipums$country == selected.country ][ match( country.tab.cobalt$isco88 ,ipums$isco88a[ ipums$country == selected.country ] )]
+     
+     country.tab.cobalt$estatus <- canjem.pop.cobalt$exposed[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D)]
+     
+     country.tab.cobalt$estatus[ is.na(country.tab.cobalt$estatus)] <- "unknown"
+     
+     country.tab.cobalt$p.exp <- canjem.pop.cobalt$p[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D)]
+     
+    country.tab.cobalt$n.low <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.C1[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
+     
+    country.tab.cobalt$n.medium <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.C2[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
+     
+    country.tab.cobalt$n.high <- signif(country.tab.cobalt$n.people*canjem.pop.cobalt$p.C3[ match( country.tab.cobalt$isco88 , canjem.pop.cobalt$ISCO883D) ]/100 , 2 )
+     
+    country.tab.cobalt$most.freq.confidence <- ifelse(country.tab.cobalt$estatus == "pot.exposed", 
+                                                        confidence$label[ confidence$code == canjem.pop.cobalt$most.freq.confidence[ canjem.pop.cobalt$ISCO883D == myisco ] ],
+                                                        NA)
+     
+    country.tab.cobalt$most.freq.frequency <- ifelse( country.tab.cobalt$estatus == "pot.exposed", 
+                                                       frequency$label[ frequency$code == canjem.pop.cobalt$most.freq.frequency[ canjem.pop.cobalt$ISCO883D == myisco ] ],
+                                                       NA)
+     
