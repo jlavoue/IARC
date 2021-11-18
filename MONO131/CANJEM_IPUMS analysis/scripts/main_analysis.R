@@ -36,7 +36,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     
     country <- read_xlsx("MONO131/CANJEM_IPUMS analysis/raw data/fromIPUMS/countries.xlsx")
     
-    ### preping the inames for intensity / frequency / reliability
+    ### preping the names for intensity / frequency / reliability
     
     confidence <- data.frame( code = 1:3 , label = c("possible","probable","definite") , stringsAsFactors = FALSE)
     
