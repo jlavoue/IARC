@@ -18,7 +18,12 @@ library(ggthemes)
 library(shinyTree)
 library(readxl)
 library(DT)
-library(plyr)
+#library(plyr)
+
+isco <- read_xlsx("./data/isco883D.xlsx")
+
+country <- read_xlsx("./data/countries.xlsx")
+
 
 
 # Define UI for application that draws a histogram
@@ -124,7 +129,7 @@ tabPanel("CANJEM",
          
          br(),
          
-         p("The table below present all 3-digit ISCO 88 occupations in CANJEM with at least 1% probability of exposure, respectively for cobalt, antimony and tungsten, along with the most frequent confidence, intensity, and frequency of exposure categories across exposed jobs held by CANJEM subjects within each occupation."),
+         p("The tables below present all 3-digit ISCO 88 occupations in CANJEM with at least 1% probability of exposure, respectively for cobalt, antimony and tungsten, along with the most frequent confidence, intensity, and frequency of exposure categories across exposed jobs held by CANJEM subjects within each occupation."),
          
          hr(),
          
@@ -187,9 +192,69 @@ tabPanel("CANJEM",
                                
                        )) ))
     
-          )
+          ),
+
+
+########################### CANJEM INFORMATIONM BY COUNTRY
+
+          tabPanel("Exposure estimates by COUNTRY",
+
+                  br(),
+                  
+                  p("This tab provides the result of merging CANJEM with the IPUMS census data for a selected country."),
+                  
+                  selectInput("country","Select country", choices = country$Label ,
+                              selected = "France"),
+                  
+                  
+                  tabsetPanel(
+                    
+
+                      tabPanel( "COBALT" , 
+                                
+                                br(),
+                                
+                                p( "The first table below provides an overall portrait for the selected country." ),
+                                
+                                tableOutput("estbycountry.cobalt.overall"),
+                                
+                                br(),
+                                
+                                hr(),
+                                
+                                p("The table below provides details of workers exposed by ISCO 88 3-digit category"),
+                                
+                                br(),
+                                
+                                DT::dataTableOutput("estbycountry.cobalt"),
+                                
+                                hr()
+                                
+
+                                
+                                ),
+                    
+                      tabPanel( "ANTIMONY" ),
+                    
+                      tabPanel( "TUNGSTEN" )
+                    
+                  )
+
+          ),
+
+########################### CANJEM INFORMATION BY OCCPATION
     
-    
+          tabPanel("Exposure estimates by OCCUPATION",
+                   
+                   
+                   tabsetPanel(
+                     
+                     tabPanel( "COBALT" ),
+                     
+                     tabPanel( "ANTIMONY" ),
+                     
+                     tabPanel( "TUNGSTEN" )
+                   )
     
     )
-)
+))
