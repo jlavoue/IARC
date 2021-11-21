@@ -386,10 +386,320 @@ shinyServer(function(input, output) {
                
       ###### ANTIMONY
                
+             ########## creation of the base table   
+             
+             estbycountry.antimony.prep <- reactive({
                
-      ###### ANTIMANY         
+               selected.country <- country$Value[ country$Label == input$country ]
                
-       
-      ######  OVERALL TABLE                 
+               country.tab.antimony <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
+               
+               country.tab.antimony$isco.lab <- isco$Label[ match( country.tab.antimony$isco88 , isco$Value)]
+               
+               country.tab.antimony <- country.tab.antimony[ !is.element( country.tab.antimony$isco88 , c(998,999) )   ,  ]
+               
+               country.tab.antimony$n.people <-   ipums$n_people[ ipums$country == selected.country ][ match( country.tab.antimony$isco88 ,ipums$isco88a[ ipums$country == selected.country ] )]  
+               
+               country.tab.antimony$estatus <- canjem.pop.antimony$exposed[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D)]
+               
+               country.tab.antimony$estatus[ is.na(country.tab.antimony$estatus)] <- "unknown"
+               
+               country.tab.antimony$p.exp <- canjem.pop.antimony$p[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D)]
+               
+               country.tab.antimony$p.exp[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$n.low <-  country.tab.antimony$n.people*canjem.pop.antimony$p.C1[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.low[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$n.medium <-  country.tab.antimony$n.people*canjem.pop.antimony$p.C2[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.medium[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$n.high <-  country.tab.antimony$n.people*canjem.pop.antimony$p.C3[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.high[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$most.freq.confidence <- ifelse(country.tab.antimony$estatus == "pot.exposed", 
+                                                                 confidence$label[ match( canjem.pop.antimony$most.freq.confidence[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ] , confidence$code ) ],
+                                                                 NA)
+               
+               country.tab.antimony$n.lessthan2h <-  country.tab.antimony$n.people*canjem.pop.antimony$p.F1[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.lessthan2h[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$n.2_12h <-  country.tab.antimony$n.people*canjem.pop.antimony$p.F2[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.2_12h[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$n.12_39h <-  country.tab.antimony$n.people*canjem.pop.antimony$p.F3[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.12_39h[ country.tab.antimony$estatus == "unexposed" ] <- 0
+               
+               country.tab.antimony$n.40handover <-  country.tab.antimony$n.people*canjem.pop.antimony$p.F4[ match( country.tab.antimony$isco88 , canjem.pop.antimony$ISCO883D) ]/100 
+               
+               country.tab.antimony$n.40handover[ country.tab.antimony$estatus == "unexposed" ] <- 0  
+               
+               
+               return(country.tab.antimony[ order(country.tab.antimony$p.ex , decreasing = TRUE ) , ])
+               
+               
+             })  
+             
+             ######### overall table
+             
+             output$estbycountry.antimony.overall <-  renderTable({    
+               
+               
+               country.tab.antimony <- estbycountry.antimony.prep()
+               
+               
+               country.overall.antimony <- data.frame( metric = c("total.n" , "P.exp" , "P.unexp" ,"P.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
+               
+               country.overall.antimony$value[1] <-  sum(country.tab.antimony$n.people)
+               
+               country.overall.antimony$value[2] <-   100*sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "pot.exposed"] * country.tab.antimony$p.exp[ country.tab.antimony$estatus == "pot.exposed"]/100)/country.overall.antimony$value[1]   
+               
+               country.overall.antimony$value[3] <-   100* ( sum(country.tab.antimony$n.people[ country.tab.antimony$estatus=="unexposed" ]) + 
+                                                             sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "pot.exposed"])-
+                                                             sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "pot.exposed"] * country.tab.antimony$p.exp[ country.tab.antimony$estatus == "pot.exposed"]/100)) / country.overall.antimony$value[1]   
+               
+               country.overall.antimony$value[4] <-   100*sum(country.tab.antimony$n.people[ country.tab.antimony$estatus == "unknown"])/country.overall.antimony$value[1]   
+               
+               country.overall.antimony$value[5] <-   sum( country.tab.antimony$n.low , na.rm = TRUE )  
+               
+               country.overall.antimony$value[6] <-   sum( country.tab.antimony$n.medium , na.rm = TRUE  )  
+               
+               country.overall.antimony$value[7] <-   sum( country.tab.antimony$n.high , na.rm = TRUE  )  
+               
+               country.overall.antimony$value[8] <-   sum( country.tab.antimony$n.lessthan2h , na.rm = TRUE  )  
+               
+               country.overall.antimony$value[9] <-   sum( country.tab.antimony$n.2_12h , na.rm = TRUE  )  
+               
+               country.overall.antimony$value[10] <-   sum( country.tab.antimony$n.12_39h , na.rm = TRUE  )  
+               
+               country.overall.antimony$value[11] <-   sum( country.tab.antimony$n.40handover , na.rm = TRUE  ) 
+               
+               
+               ## number formatting
+               
+               test <- data.frame( metric = country.overall.antimony$metric ,
+                                   
+                                   value = character(11) )
+               
+               
+               
+               test$value[1] <-  paste(formatC( country.overall.antimony$value[1], digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               
+               test$value[2] <- paste( signif( country.overall.antimony$value[2] , 2 ) , "%" , sep="" )
+               test$value[3] <- paste( signif( country.overall.antimony$value[3] , 2 ) , "%" , sep="" )
+               test$value[4] <- paste( signif( country.overall.antimony$value[4] , 2 ) , "%" , sep="" )
+               
+               test$value[5] <-  paste(formatC( round(country.overall.antimony$value[5]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[6] <-  paste(formatC( round(country.overall.antimony$value[6]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[7] <-  paste(formatC( round(country.overall.antimony$value[7]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[8] <-  paste(formatC( round(country.overall.antimony$value[8]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[9] <-  paste(formatC( round(country.overall.antimony$value[9]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[10] <-  paste(formatC( round(country.overall.antimony$value[10]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[11] <-  paste(formatC( round(country.overall.antimony$value[11]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$metric <- c("Number of workers" , "Proportion exposed(%)" , "Proportion unexposed(%)" ,"Proportion unknown(%)" , "Number exposed to low intensity" , "Number exposed to medium intensity" , "Number exposed to high intensity" , "Number exposed less than 2h per week" , "Number exposed 2-12h per week" , "Number exposed 12-39 per week" , "Number exposed 40h per week")
+               
+               
+               return(test)
+               
+             })                 
+             
+             ######## by country table   
+             
+             output$estbycountry.antimony <-  DT::renderDataTable({ 
+               
+               country.tab.antimony <- estbycountry.antimony.prep()
+               
+               datatable(country.tab.antimony,
+                         rownames = FALSE, 
+                         
+                         colnames = c( "Code" , "Label" , "N.workers" , "Expo_status" , "Prop_exp (%)" , "N low exp" , "N medium exp" , "N high exp" , 
+                                       "Confidence" , "<2h" , "2-12h" , "12-39h" , "40h+"),
+                         
+                         options = list( autoWidth = TRUE , pageLength = 10 , 
+                                         
+                                         columnDefs = list(                                     list(width = '200px', targets = "1_all"),
+                                                                                                list(className = 'dt-center', targets = 2:12),
+                                                                                                list(className = 'dt-left', targets = 0:1)) ),
+                         
+                         caption = 'Population exposed to antimony by 3-Digit ISCO') %>%
+                 formatRound('n.people', digits = 0)%>%
+                 formatRound('p.exp', digits = 1)%>%
+                 formatRound('n.low', digits = 0)%>%
+                 formatRound('n.medium', digits = 0)%>%
+                 formatRound('n.high', digits = 0)%>%
+                 formatRound('n.lessthan2h', digits = 0)%>%
+                 formatRound('n.2_12h', digits = 0)%>%
+                 formatRound('n.12_39h', digits = 0)%>%
+                 formatRound('n.40handover', digits = 0)
+               
+             })
+             
+             
+             
+ 
+                    
+      ###### TNUGSTEN         
+               
+             ########## creation of the base table   
+             
+             estbycountry.tungsten.prep <- reactive({
+               
+               selected.country <- country$Value[ country$Label == input$country ]
+               
+               country.tab.tungsten <- data.frame( isco88 = unique( ipums$isco88a[ ipums$country == selected.country] )) 
+               
+               country.tab.tungsten$isco.lab <- isco$Label[ match( country.tab.tungsten$isco88 , isco$Value)]
+               
+               country.tab.tungsten <- country.tab.tungsten[ !is.element( country.tab.tungsten$isco88 , c(998,999) )   ,  ]
+               
+               country.tab.tungsten$n.people <-   ipums$n_people[ ipums$country == selected.country ][ match( country.tab.tungsten$isco88 ,ipums$isco88a[ ipums$country == selected.country ] )]  
+               
+               country.tab.tungsten$estatus <- canjem.pop.tungsten$exposed[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D)]
+               
+               country.tab.tungsten$estatus[ is.na(country.tab.tungsten$estatus)] <- "unknown"
+               
+               country.tab.tungsten$p.exp <- canjem.pop.tungsten$p[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D)]
+               
+               country.tab.tungsten$p.exp[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$n.low <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.C1[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.low[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$n.medium <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.C2[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.medium[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$n.high <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.C3[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.high[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$most.freq.confidence <- ifelse(country.tab.tungsten$estatus == "pot.exposed", 
+                                                                 confidence$label[ match( canjem.pop.tungsten$most.freq.confidence[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ] , confidence$code ) ],
+                                                                 NA)
+               
+               country.tab.tungsten$n.lessthan2h <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.F1[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.lessthan2h[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$n.2_12h <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.F2[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.2_12h[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$n.12_39h <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.F3[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.12_39h[ country.tab.tungsten$estatus == "unexposed" ] <- 0
+               
+               country.tab.tungsten$n.40handover <-  country.tab.tungsten$n.people*canjem.pop.tungsten$p.F4[ match( country.tab.tungsten$isco88 , canjem.pop.tungsten$ISCO883D) ]/100 
+               
+               country.tab.tungsten$n.40handover[ country.tab.tungsten$estatus == "unexposed" ] <- 0  
+               
+               
+               return(country.tab.tungsten[ order(country.tab.tungsten$p.ex , decreasing = TRUE ) , ])
+               
+               
+             })  
+             
+             ######### overall table
+             
+             output$estbycountry.tungsten.overall <-  renderTable({    
+               
+               
+               country.tab.tungsten <- estbycountry.tungsten.prep()
+               
+               
+               country.overall.tungsten <- data.frame( metric = c("total.n" , "P.exp" , "P.unexp" ,"P.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
+               
+               country.overall.tungsten$value[1] <-  sum(country.tab.tungsten$n.people)
+               
+               country.overall.tungsten$value[2] <-   100*sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "pot.exposed"] * country.tab.tungsten$p.exp[ country.tab.tungsten$estatus == "pot.exposed"]/100)/country.overall.tungsten$value[1]   
+               
+               country.overall.tungsten$value[3] <-   100* ( sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus=="unexposed" ]) + 
+                                                             sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "pot.exposed"])-
+                                                             sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "pot.exposed"] * country.tab.tungsten$p.exp[ country.tab.tungsten$estatus == "pot.exposed"]/100)) / country.overall.tungsten$value[1]   
+               
+               country.overall.tungsten$value[4] <-   100*sum(country.tab.tungsten$n.people[ country.tab.tungsten$estatus == "unknown"])/country.overall.tungsten$value[1]   
+               
+               country.overall.tungsten$value[5] <-   sum( country.tab.tungsten$n.low , na.rm = TRUE )  
+               
+               country.overall.tungsten$value[6] <-   sum( country.tab.tungsten$n.medium , na.rm = TRUE  )  
+               
+               country.overall.tungsten$value[7] <-   sum( country.tab.tungsten$n.high , na.rm = TRUE  )  
+               
+               country.overall.tungsten$value[8] <-   sum( country.tab.tungsten$n.lessthan2h , na.rm = TRUE  )  
+               
+               country.overall.tungsten$value[9] <-   sum( country.tab.tungsten$n.2_12h , na.rm = TRUE  )  
+               
+               country.overall.tungsten$value[10] <-   sum( country.tab.tungsten$n.12_39h , na.rm = TRUE  )  
+               
+               country.overall.tungsten$value[11] <-   sum( country.tab.tungsten$n.40handover , na.rm = TRUE  ) 
+               
+               
+               ## number formatting
+               
+               test <- data.frame( metric = country.overall.tungsten$metric ,
+                                   
+                                   value = character(11) )
+               
+               
+               
+               test$value[1] <-  paste(formatC( country.overall.tungsten$value[1], digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               
+               test$value[2] <- paste( signif( country.overall.tungsten$value[2] , 2 ) , "%" , sep="" )
+               test$value[3] <- paste( signif( country.overall.tungsten$value[3] , 2 ) , "%" , sep="" )
+               test$value[4] <- paste( signif( country.overall.tungsten$value[4] , 2 ) , "%" , sep="" )
+               
+               test$value[5] <-  paste(formatC( round(country.overall.tungsten$value[5]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[6] <-  paste(formatC( round(country.overall.tungsten$value[6]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[7] <-  paste(formatC( round(country.overall.tungsten$value[7]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[8] <-  paste(formatC( round(country.overall.tungsten$value[8]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[9] <-  paste(formatC( round(country.overall.tungsten$value[9]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[10] <-  paste(formatC( round(country.overall.tungsten$value[10]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$value[11] <-  paste(formatC( round(country.overall.tungsten$value[11]), digits=9, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+               test$metric <- c("Number of workers" , "Proportion exposed(%)" , "Proportion unexposed(%)" ,"Proportion unknown(%)" , "Number exposed to low intensity" , "Number exposed to medium intensity" , "Number exposed to high intensity" , "Number exposed less than 2h per week" , "Number exposed 2-12h per week" , "Number exposed 12-39 per week" , "Number exposed 40h per week")
+               
+               
+               return(test)
+               
+             })                 
+             
+             ######## by country table   
+             
+             output$estbycountry.tungsten <-  DT::renderDataTable({ 
+               
+               country.tab.tungsten <- estbycountry.tungsten.prep()
+               
+               datatable(country.tab.tungsten,
+                         rownames = FALSE, 
+                         
+                         colnames = c( "Code" , "Label" , "N.workers" , "Expo_status" , "Prop_exp (%)" , "N low exp" , "N medium exp" , "N high exp" , 
+                                       "Confidence" , "<2h" , "2-12h" , "12-39h" , "40h+"),
+                         
+                         options = list( autoWidth = TRUE , pageLength = 10 , 
+                                         
+                                         columnDefs = list(                                     list(width = '200px', targets = "1_all"),
+                                                                                                list(className = 'dt-center', targets = 2:12),
+                                                                                                list(className = 'dt-left', targets = 0:1)) ),
+                         
+                         caption = 'Population exposed to tungsten by 3-Digit ISCO') %>%
+                 formatRound('n.people', digits = 0)%>%
+                 formatRound('p.exp', digits = 1)%>%
+                 formatRound('n.low', digits = 0)%>%
+                 formatRound('n.medium', digits = 0)%>%
+                 formatRound('n.high', digits = 0)%>%
+                 formatRound('n.lessthan2h', digits = 0)%>%
+                 formatRound('n.2_12h', digits = 0)%>%
+                 formatRound('n.12_39h', digits = 0)%>%
+                 formatRound('n.40handover', digits = 0)
+               
+             })
+             
+                
            
 })

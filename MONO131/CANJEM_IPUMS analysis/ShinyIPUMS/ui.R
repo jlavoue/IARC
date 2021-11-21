@@ -24,7 +24,7 @@ isco <- read_xlsx("./data/isco883D.xlsx")
 
 country <- read_xlsx("./data/countries.xlsx")
 
-
+ipums <- readRDS( "./data/ipums.RDS" )
 
 # Define UI for application that draws a histogram
 ui <- tagList(
@@ -203,7 +203,7 @@ tabPanel("CANJEM",
                   
                   p("This tab provides the result of merging CANJEM with the IPUMS census data for a selected country."),
                   
-                  selectInput("country","Select country", choices = country$Label ,
+                  selectInput("country","Select country", choices = country$Label[ is.element( country$Value , ipums$country)] ,
                               selected = "France"),
                   
                   
@@ -234,9 +234,53 @@ tabPanel("CANJEM",
                                 
                                 ),
                     
-                      tabPanel( "ANTIMONY" ),
+                      tabPanel( "ANTIMONY" , 
+                                
+                                br(),
+                                
+                                p( "The first table below provides an overall portrait for the selected country." ),
+                                
+                                tableOutput("estbycountry.antimony.overall"),
+                                
+                                br(),
+                                
+                                hr(),
+                                
+                                p("The table below provides details of workers exposed by ISCO 88 3-digit category"),
+                                
+                                br(),
+                                
+                                DT::dataTableOutput("estbycountry.antimony"),
+                                
+                                hr()
+                                
+                                
+                                
+                      ),
                     
-                      tabPanel( "TUNGSTEN" )
+                      tabPanel( "TUNGSTEN"  , 
+                                
+                                br(),
+                                
+                                p( "The first table below provides an overall portrait for the selected country." ),
+                                
+                                tableOutput("estbycountry.tungsten.overall"),
+                                
+                                br(),
+                                
+                                hr(),
+                                
+                                p("The table below provides details of workers exposed by ISCO 88 3-digit category"),
+                                
+                                br(),
+                                
+                                DT::dataTableOutput("estbycountry.tungsten"),
+                                
+                                hr()
+                                
+                                
+                                
+                      )
                     
                   )
 
