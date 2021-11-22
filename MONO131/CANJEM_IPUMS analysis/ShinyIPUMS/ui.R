@@ -53,7 +53,7 @@ ui <- tagList(
              
              p("IPUMS and CANJEM were merged in order to estimate population of workers exposed to cobalt, antimony, and tungsten internationally."),
              
-             p("The IPUMS tab provides an overview of the IPUMS data used, the CANJEM tab shows the information retrieved from the CANJEM application, the three other tabs provide exposure estimates for cobalt, antimony, and tungsten"),
+             p("The IPUMS tab provides an overview of the IPUMS data used, the CANJEM tab shows the information retrieved from the CANJEM, the three other tabs provide exposure estimates for cobalt, antimony, and tungsten"),
              
              br()
              
