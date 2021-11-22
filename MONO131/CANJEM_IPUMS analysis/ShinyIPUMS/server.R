@@ -12,7 +12,7 @@ library(utils)
 library(shinythemes)
 library(ggplot2)
 library(shinycssloaders)
-library(dplyr)
+library(plyr)
 library(shinybusy)
 library(ggthemes)
 library(shinyTree)
@@ -758,4 +758,94 @@ shinyServer(function(input, output) {
              
              
            
+
+
+
+     ##########################  REACTIVE TABLE BY COUNTRY
+             
+             
+          mycountry.prep <- reactive({
+            
+            mycountry <- ddply( ipums[ ipums$isco88a != 999 , ], .(country), summarize, n.M =   sum(n_people)/1000000  )
+            
+            mycountry$country.lab <- country$Label[ match( mycountry$country , country$Value)]
+            
+            mycountry <- mycountry[ order( mycountry$n.M , decreasing = TRUE ), c(1,3,2)]
+            
+            mycountry$year <- ipums$year[ match( mycountry$country , ipums$country)]  
+            
+            
+          })
+          
+             
+
+          estbyoccupation.cobalt.prep <- reactive({
+            
+                      #selected.occupation <- isco.choice_by_isco()
+            
+                      selected.occupation <- 722
+                      
+                      myisco <- selected.occupation
+                      
+                      mycountry <- mycountry.prep()
+                      
+                      ## making a table summarizing exposure info ( top 5 countries)
+                      
+                      occup.tab.cobalt <- data.frame( country = unique( ipums$country[ ipums$isco88a == myisco]  ) , stringsAsFactors = FALSE )
+                      
+                      occup.tab.cobalt$country.lab <- country$Label[ match( occup.tab.cobalt$country , country$Value)]
+                      
+                      occup.tab.cobalt$n.people <-   ipums$n_people[ ipums$isco88a == myisco][ match( occup.tab.cobalt$country , ipums$country[ ipums$isco88a == myisco]  )  ]  
+                      
+                      occup.tab.cobalt$perc.people <-   100*occup.tab.cobalt$n.people/ (1000000*mycountry$n.M[ match( occup.tab.cobalt$country , mycountry$country )] )  
+                      
+                      occup.tab.cobalt$estatus <- canjem.pop.cobalt$exposed[ canjem.pop.cobalt$ISCO883D == myisco ]
+                      
+                      occup.tab.cobalt$n.unexp <-   occup.tab.cobalt$n.people*canjem.pop.cobalt$p.C0[ canjem.pop.cobalt$ISCO883D == myisco ]/100 
+                      
+                      occup.tab.cobalt$n.low <-   occup.tab.cobalt$n.people*canjem.pop.cobalt$p.C1[ canjem.pop.cobalt$ISCO883D == myisco ]/100 
+                      
+                      occup.tab.cobalt$n.medium <-   occup.tab.cobalt$n.people*canjem.pop.cobalt$p.C2[ canjem.pop.cobalt$ISCO883D == myisco ]/100 
+                      
+                      occup.tab.cobalt$n.high <-   occup.tab.cobalt$n.people*canjem.pop.cobalt$p.C3[ canjem.pop.cobalt$ISCO883D == myisco ]/100 
+                      
+                      occup.tab.cobalt$most.freq.confidence <- ifelse( occup.tab.cobalt$estatus == "pot.exposed", 
+                                                                       confidence$label[ confidence$code == canjem.pop.cobalt$most.freq.confidence[ canjem.pop.cobalt$ISCO883D == myisco ] ],
+                                                                       NA)
+                      
+                      occup.tab.cobalt$most.freq.frequency <- ifelse( occup.tab.cobalt$estatus == "pot.exposed", 
+                                                                      frequency$label[ frequency$code == canjem.pop.cobalt$most.freq.frequency[ canjem.pop.cobalt$ISCO883D == myisco ] ],
+                                                                      NA)
+                      return(occup.tab.cobalt)
+                      
+          })
+
+     ######################### OVERALL TABLE for one occupation
+
+          output$estbyisco.cobalt.overall <-  renderTable({    
+             
+            occup.tab.cobalt <- estbyoccupation.cobalt.prep()
+            
+            occup.overall.cobalt <- data.frame( metric = c("total.n" , "total.perc" , "estatus" , "n.unexp" , "n.low" , "n.medium" , "n.high") , stringsAsFactors = FALSE )
+            
+            occup.overall.cobalt$value[1] <-   sum(occup.tab.cobalt$n.people)  
+            
+            occup.overall.cobalt$value[2] <-   100*occup.overall.cobalt$value[1]/sum( mycountry$n.M * 1000000 )  
+            
+            occup.overall.cobalt$value[3] <- occup.tab.cobalt$estatus[1]
+            
+            occup.overall.cobalt$value[4] <-   sum( occup.tab.cobalt$n.unexp)  
+            
+            occup.overall.cobalt$value[5] <-   sum( occup.tab.cobalt$n.low )  
+            
+            occup.overall.cobalt$value[6] <-   sum( occup.tab.cobalt$n.medium )  
+            
+            occup.overall.cobalt$value[7] <-   sum( occup.tab.cobalt$n.high )  
+
+             return(occup.overall.cobalt$value)
+             
+           })
+             
+     ############################ Table by COUNTRY
+     
 })

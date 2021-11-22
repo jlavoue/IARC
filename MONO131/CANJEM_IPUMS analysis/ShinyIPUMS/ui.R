@@ -12,7 +12,7 @@ library(utils)
 library(shinythemes)
 library(ggplot2)
 library(shinycssloaders)
-library(dplyr)
+library(plyr)
 library(shinybusy)
 library(ggthemes)
 library(shinyTree)
@@ -297,7 +297,7 @@ tabPanel("CANJEM",
                      
                      tabPanel( "COBALT",
                                
-                               p("test"),
+                               p("This tab provides the result of merging CANJEM with the IPUMS census data for a selected occupation."),
                                
                                br(),
                                
@@ -327,6 +327,20 @@ tabPanel("CANJEM",
                                  column(8,
                                         
                                         h3("Summary by country"),
+                                        
+                                        tabsetPanel( 
+                                          
+                                          tabPanel("Overral picture",
+                                                   
+                                                   br(),
+                                                   
+                                                   tableOutput("estbyisco.cobalt.overall")
+                                                   
+                                                   ),
+                                          
+                                          tabPanel("By country")
+                                          
+                                          ),
                                         
                                         br(),
                                         
