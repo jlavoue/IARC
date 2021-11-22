@@ -18,7 +18,7 @@ library(ggthemes)
 library(shinyTree)
 library(readxl)
 library(DT)
-#library(plyr)
+library(shinyTree)
 
 
 ###################### preliminaries
@@ -41,6 +41,12 @@ library(DT)
         isco <- read_xlsx("./data/isco883D.xlsx")
         
         country <- read_xlsx("./data/countries.xlsx")
+        
+        
+        ### tree
+        
+        isco.tree <- readRDS("./data/isco.tree.RDS")
+        
         
         
         ######## sourcing stuff
@@ -700,6 +706,56 @@ shinyServer(function(input, output) {
                
              })
              
-                
+################################################# ESTIMATES BY ISCO
+             
+      ###### DATA SELECTION - MANAGEMENT OF TREES
+             
+             ####isco tree
+             
+             output$isco_tree_by_isco <- renderTree({
+               
+               isco.tree
+               
+             })              
+             ###selected isco 
+             
+             isco.choice_by_isco <-reactive({
+               
+               tree.in <- input$isco_tree_by_isco
+               
+               isco.selected <-unlist(get_selected(tree.in)) 
+               
+               result <- substring( isco.selected , 1 , regexpr( ":" , isco.selected) - 2 )
+               
+               return(result)
+               
+             })      
+             
+             ##### selected isco name
+             
+             output$isconame_by_isco <- renderText({ 
+               
+               iscotofind <- isco.choice_by_isco()
+               
+               result <- isco$Label[ isco$Value==iscotofind]
+               
+               return(result)
+               
+             }) 
+             
+             ### if no isco selected
+             
+             output$by_isco_noiscoselected <- reactive({
+               
+               isco <- isco.choice_by_isco()
+               
+               result <-  length(isco)==0
+               
+               return(result)
+             })
+             
+             outputOptions(output, 'by_isco_noiscoselected', suspendWhenHidden=FALSE) 
+             
+             
            
 })

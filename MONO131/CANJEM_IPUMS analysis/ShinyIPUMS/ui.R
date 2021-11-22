@@ -18,6 +18,8 @@ library(ggthemes)
 library(shinyTree)
 library(readxl)
 library(DT)
+library(shinyTree)
+
 #library(plyr)
 
 isco <- read_xlsx("./data/isco883D.xlsx")
@@ -293,7 +295,49 @@ tabPanel("CANJEM",
                    
                    tabsetPanel(
                      
-                     tabPanel( "COBALT" ),
+                     tabPanel( "COBALT",
+                               
+                               p("test"),
+                               
+                               br(),
+                               
+                               fluidRow(
+                                 column(4,
+                                        
+                                        h3("Data selection"),
+                                        
+                                        br(),
+                                        
+                                        p(strong("ISCO88 name: "),textOutput("isconame_by_isco",inline=TRUE)),
+                                        
+                                        br(),
+                                        
+                                        h4("ISCO88 hierarchy"),
+                                        
+                                        br(),
+                                        
+                                        p("search field"),
+                                        
+                                        shinyTree("isco_tree_by_isco", search=TRUE)
+                                        
+                                        
+                                        
+                                 ),
+                                 
+                                 column(8,
+                                        
+                                        h3("Summary by country"),
+                                        
+                                        br(),
+                                        
+ 
+                                        
+                                        
+                                        
+                                 )
+                               )
+                               
+                               ),
                      
                      tabPanel( "ANTIMONY" ),
                      
