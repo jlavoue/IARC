@@ -774,6 +774,7 @@ shinyServer(function(input, output) {
             
             mycountry$year <- ipums$year[ match( mycountry$country , ipums$country)]  
             
+            return(mycountry)
             
           })
           
@@ -826,6 +827,9 @@ shinyServer(function(input, output) {
              
             occup.tab.cobalt <- estbyoccupation.cobalt.prep()
             
+            mycountry <- mycountry.prep()
+            
+            
             occup.overall.cobalt <- data.frame( metric = c("total.n" , "total.perc" , "estatus" , "n.unexp" , "n.low" , "n.medium" , "n.high") , stringsAsFactors = FALSE )
             
             occup.overall.cobalt$value[1] <-   sum(occup.tab.cobalt$n.people)  
@@ -842,10 +846,61 @@ shinyServer(function(input, output) {
             
             occup.overall.cobalt$value[7] <-   sum( occup.tab.cobalt$n.high )  
 
-             return(occup.overall.cobalt$value)
+            ## number formatting
+            
+            test <- data.frame( metric = occup.overall.cobalt$metric ,
+                                
+                                value = character(7) )
+            
+            
+            
+            test$value[1] <-  paste(formatC( as.numeric( occup.overall.cobalt$value[1]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+            
+            test$value[2] <-  paste( signif( as.numeric( occup.overall.cobalt$value[2]) , 2), " %", sep="")
+            
+            test$value[3] <-  occup.overall.cobalt$value[3]
+            
+            if (test$value[3]=="pot.exposed") test$value[3] <-"Potentially exposed" 
+            
+            test$value[4] <- paste(formatC( as.numeric( occup.overall.cobalt$value[4]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+            test$value[5] <-  paste(formatC( as.numeric( occup.overall.cobalt$value[5]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+            test$value[6] <-  paste(formatC( as.numeric( occup.overall.cobalt$value[6]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+            test$value[7] <-  paste(formatC( as.numeric( occup.overall.cobalt$value[7]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+           
+            test$metric <- c("Number of workers in this occupation" , "Proportion of included population(%)" , "Exposure status" ,"Number of unexposed workers" , "Number exposed to low intensity" , "Number exposed to medium intensity" , "Number exposed to high intensity" )
+            
+            
+            return(test)
              
            })
              
      ############################ Table by COUNTRY
+          
+          output$estbyisco.cobalt <-  DT::renderDataTable({ 
+            
+            occup.tab.cobalt <- estbyoccupation.cobalt.prep()
+            
+            datatable(occup.tab.cobalt[,2:11],
+                      rownames = FALSE, 
+                      
+                      colnames = c( "Label" , "N.workers" , "Prop of pop(%)" , "Exposure status" , "N.unexp", "N.low" , "N.medium" , "N.high" , 
+                                    "Confidence" , "Frequency"),
+                      
+                      options = list( autoWidth = TRUE , pageLength = 10 , 
+                                      
+                                      columnDefs = list(                                     list(width = '200px', targets = "_all"),
+                                                                                             list(className = 'dt-center', targets = 2:9),
+                                                                                             list(className = 'dt-left', targets = 0:1)) ),
+                      
+                      caption = 'Population exposed to cobalt by country') %>%
+              formatRound('n.people', digits = 0)%>%
+              formatRound('perc.people', digits = 1)%>%
+              formatRound('n.low', digits = 0)%>%
+              formatRound('n.medium', digits = 0)%>%
+              formatRound('n.high', digits = 0)%>%
+              formatRound('n.unexp', digits = 0)
+            
+          })
+          
      
 })

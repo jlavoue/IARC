@@ -338,7 +338,11 @@ tabPanel("CANJEM",
                                                    
                                                    ),
                                           
-                                          tabPanel("By country")
+                                          tabPanel("By country",
+                                                   
+                                                   br(),
+                                                   
+                                                   DT::dataTableOutput("estbyisco.cobalt"))
                                           
                                           ),
                                         
