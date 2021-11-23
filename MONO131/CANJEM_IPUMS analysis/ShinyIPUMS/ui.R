@@ -292,45 +292,55 @@ tabPanel("CANJEM",
     
           tabPanel("Exposure estimates by OCCUPATION",
                    
+                   br(),
+                   
+                   p("This tab provides the result of merging CANJEM with the IPUMS census data for a selected occupation."),
+                   
+                   br(),
+                   
+                   fluidRow( column(4,
+                                    
+                                    h3("Data selection"),
+                                    
+                                    br(),
+                                    
+                                    p(strong("ISCO88 name: "),textOutput("isconame_by_isco",inline=TRUE)), 
+                                    br(),
+                                    
+                                    br(),
+                                    
+                                    h4("ISCO88 hierarchy"),
+                                    
+                                    br(),
+                                    
+                                    p("search field"),
+                                    
+                                    shinyTree("isco_tree_by_isco", search=TRUE)
+                                    
+                                    
+                                    
+                              ),
+                             
+                             
+                             column(8, 
                    
                    tabsetPanel(
                      
+
+                     
                      tabPanel( "COBALT",
-                               
-                               p("This tab provides the result of merging CANJEM with the IPUMS census data for a selected occupation."),
                                
                                br(),
                                
-                               fluidRow(
-                                 column(4,
-                                        
-                                        h3("Data selection"),
-                                        
-                                        br(),
-                                        
-                                        p(strong("ISCO88 name: "),textOutput("isconame_by_isco",inline=TRUE)),
-                                        
-                                        br(),
-                                        
-                                        h4("ISCO88 hierarchy"),
-                                        
-                                        br(),
-                                        
-                                        p("search field"),
-                                        
-                                        shinyTree("isco_tree_by_isco", search=TRUE)
-                                        
-                                        
-                                        
-                                 ),
-                                 
-                                 column(8,
-                                        
-                                        h3("Summary by country"),
-                                        
-                                        tabsetPanel( 
+                               strong(em("Please only select 3-digit ISCO codes on the selection menu. Except for code 10 for armed forces, other selections will lead to an error message.")),
+                               
+                               br(),
+                               
+                               br(),
+                               
+                               tabsetPanel( 
                                           
-                                          tabPanel("Overral picture",
+                                      tabPanel("Overral picture",
                                                    
                                                    br(),
                                                    
@@ -346,21 +356,85 @@ tabPanel("CANJEM",
                                           
                                           ),
                                         
-                                        br(),
-                                        
- 
-                                        
-                                        
-                                        
-                                 )
-                               )
+
+                     ),   
+
+                     tabPanel( "ANTIMONY" ,
                                
+                               br(),
+                               
+                               strong(em("Please only select 3-digit ISCO codes on the selection menu. Except for code 10 for armed forces, other selections will lead to an error message.")),
+                               
+                               br(),
+                               
+                               br(),
+                               
+                               tabsetPanel( 
+                                 
+                                 tabPanel("Overral picture",
+                                          
+                                          br(),
+                                          
+                                          tableOutput("estbyisco.antimony.overall")
+                                          
+                                 ),
+                                 
+                                 tabPanel("By country",
+                                          
+                                          br(),
+                                          
+                                          DT::dataTableOutput("estbyisco.antimony"))
+                                 
                                ),
+                               
+                               
+                     ),
                      
-                     tabPanel( "ANTIMONY" ),
-                     
-                     tabPanel( "TUNGSTEN" )
-                   )
+                     tabPanel( "TUNGSTEN" ,
+                               
+                               br(),
+                               
+                               strong(em("Please only select 3-digit ISCO codes on the selection menu. Except for code 10 for armed forces, other selections will lead to an error message.")),
+                               
+                               br(),
+                               
+                               br(),
+                               
+                               tabsetPanel( 
+                                 
+                                 tabPanel("Overral picture",
+                                          
+                                          br(),
+                                          
+                                          tableOutput("estbyisco.tungsten.overall")
+                                          
+                                 ),
+                                 
+                                 tabPanel("By country",
+                                          
+                                          br(),
+                                          
+                                          DT::dataTableOutput("estbyisco.tungsten"))
+                                 
+                               ),
+                               
+                               
+                     )
+                   )))
     
-    )
+    ),
+
+###########################################   OVERALL
+
+          tabPanel("Overall estimates",
+                   
+                   br(),
+                   
+                  p("This tab provides the overal result of merging the IPUMS dataset with CANJEM for the three metals of interest. The unknown status corresponds to occupations for which no CANJEM estimate was available."),
+                            
+                   tableOutput("overall")
+                    
+                   
+                   )
+
 ))

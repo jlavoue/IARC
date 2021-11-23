@@ -47,7 +47,11 @@ library(shinyTree)
         
         isco.tree <- readRDS("./data/isco.tree.RDS")
         
+        ## other
         
+        overall.final.cobalt <- readRDS("./data/overall.final.cobalt.RDS") 
+        overall.final.antimony <- readRDS("./data/overall.final.antimony.RDS") 
+        overall.final.tungsten <- readRDS("./data/overall.final.tungsten.RDS") 
         
         ######## sourcing stuff
         
@@ -821,9 +825,96 @@ shinyServer(function(input, output) {
                       
           })
 
+          
+   estbyoccupation.antimony.prep <- reactive({
+            
+            #selected.occupation <- isco.choice_by_isco()
+            
+            selected.occupation <-  isco.choice_by_isco()
+            
+            myisco <- selected.occupation
+            
+            mycountry <- mycountry.prep()
+            
+            ## making a table summarizing exposure info ( top 5 countries)
+            
+            occup.tab.antimony <- data.frame( country = unique( ipums$country[ ipums$isco88a == myisco]  ) , stringsAsFactors = FALSE )
+            
+            occup.tab.antimony$country.lab <- country$Label[ match( occup.tab.antimony$country , country$Value)]
+            
+            occup.tab.antimony$n.people <-   ipums$n_people[ ipums$isco88a == myisco][ match( occup.tab.antimony$country , ipums$country[ ipums$isco88a == myisco]  )  ]  
+            
+            occup.tab.antimony$perc.people <-   100*occup.tab.antimony$n.people/ (1000000*mycountry$n.M[ match( occup.tab.antimony$country , mycountry$country )] )  
+            
+            occup.tab.antimony$estatus <- canjem.pop.antimony$exposed[ canjem.pop.antimony$ISCO883D == myisco ]
+            
+            occup.tab.antimony$n.unexp <-   occup.tab.antimony$n.people*canjem.pop.antimony$p.C0[ canjem.pop.antimony$ISCO883D == myisco ]/100 
+            
+            occup.tab.antimony$n.low <-   occup.tab.antimony$n.people*canjem.pop.antimony$p.C1[ canjem.pop.antimony$ISCO883D == myisco ]/100 
+            
+            occup.tab.antimony$n.medium <-   occup.tab.antimony$n.people*canjem.pop.antimony$p.C2[ canjem.pop.antimony$ISCO883D == myisco ]/100 
+            
+            occup.tab.antimony$n.high <-   occup.tab.antimony$n.people*canjem.pop.antimony$p.C3[ canjem.pop.antimony$ISCO883D == myisco ]/100 
+            
+            occup.tab.antimony$most.freq.confidence <- ifelse( occup.tab.antimony$estatus == "pot.exposed", 
+                                                             confidence$label[ confidence$code == canjem.pop.antimony$most.freq.confidence[ canjem.pop.antimony$ISCO883D == myisco ] ],
+                                                             NA)
+            
+            occup.tab.antimony$most.freq.frequency <- ifelse( occup.tab.antimony$estatus == "pot.exposed", 
+                                                            frequency$label[ frequency$code == canjem.pop.antimony$most.freq.frequency[ canjem.pop.antimony$ISCO883D == myisco ] ],
+                                                            NA)
+            return(occup.tab.antimony)
+            
+          })
+          
+
+ estbyoccupation.tungsten.prep <- reactive({
+     
+           #selected.occupation <- isco.choice_by_isco()
+           
+           selected.occupation <-  isco.choice_by_isco()
+           
+           myisco <- selected.occupation
+           
+           mycountry <- mycountry.prep()
+           
+           ## making a table summarizing exposure info ( top 5 countries)
+           
+           occup.tab.tungsten <- data.frame( country = unique( ipums$country[ ipums$isco88a == myisco]  ) , stringsAsFactors = FALSE )
+           
+           occup.tab.tungsten$country.lab <- country$Label[ match( occup.tab.tungsten$country , country$Value)]
+           
+           occup.tab.tungsten$n.people <-   ipums$n_people[ ipums$isco88a == myisco][ match( occup.tab.tungsten$country , ipums$country[ ipums$isco88a == myisco]  )  ]  
+           
+           occup.tab.tungsten$perc.people <-   100*occup.tab.tungsten$n.people/ (1000000*mycountry$n.M[ match( occup.tab.tungsten$country , mycountry$country )] )  
+           
+           occup.tab.tungsten$estatus <- canjem.pop.tungsten$exposed[ canjem.pop.tungsten$ISCO883D == myisco ]
+           
+           occup.tab.tungsten$n.unexp <-   occup.tab.tungsten$n.people*canjem.pop.tungsten$p.C0[ canjem.pop.tungsten$ISCO883D == myisco ]/100 
+           
+           occup.tab.tungsten$n.low <-   occup.tab.tungsten$n.people*canjem.pop.tungsten$p.C1[ canjem.pop.tungsten$ISCO883D == myisco ]/100 
+           
+           occup.tab.tungsten$n.medium <-   occup.tab.tungsten$n.people*canjem.pop.tungsten$p.C2[ canjem.pop.tungsten$ISCO883D == myisco ]/100 
+           
+           occup.tab.tungsten$n.high <-   occup.tab.tungsten$n.people*canjem.pop.tungsten$p.C3[ canjem.pop.tungsten$ISCO883D == myisco ]/100 
+           
+           occup.tab.tungsten$most.freq.confidence <- ifelse( occup.tab.tungsten$estatus == "pot.exposed", 
+                                                            confidence$label[ confidence$code == canjem.pop.tungsten$most.freq.confidence[ canjem.pop.tungsten$ISCO883D == myisco ] ],
+                                                            NA)
+           
+           occup.tab.tungsten$most.freq.frequency <- ifelse( occup.tab.tungsten$estatus == "pot.exposed", 
+                                                           frequency$label[ frequency$code == canjem.pop.tungsten$most.freq.frequency[ canjem.pop.tungsten$ISCO883D == myisco ] ],
+                                                           NA)
+           return(occup.tab.tungsten)
+           
+   })
+   
+          
+          
+          
      ######################### OVERALL TABLE for one occupation
 
-          output$estbyisco.cobalt.overall <-  renderTable({    
+     output$estbyisco.cobalt.overall <-  renderTable({    
              
             occup.tab.cobalt <- estbyoccupation.cobalt.prep()
             
@@ -873,10 +964,115 @@ shinyServer(function(input, output) {
             return(test)
              
            })
+     
+output$estbyisco.antimony.overall <-  renderTable({    
+       
+             occup.tab.antimony <- estbyoccupation.antimony.prep()
              
+             mycountry <- mycountry.prep()
+             
+             
+             occup.overall.antimony <- data.frame( metric = c("total.n" , "total.perc" , "estatus" , "n.unexp" , "n.low" , "n.medium" , "n.high") , stringsAsFactors = FALSE )
+             
+             occup.overall.antimony$value[1] <-   sum(occup.tab.antimony$n.people)  
+             
+             occup.overall.antimony$value[2] <-   100*occup.overall.antimony$value[1]/sum( mycountry$n.M * 1000000 )  
+             
+             occup.overall.antimony$value[3] <- occup.tab.antimony$estatus[1]
+             
+             occup.overall.antimony$value[4] <-   sum( occup.tab.antimony$n.unexp)  
+             
+             occup.overall.antimony$value[5] <-   sum( occup.tab.antimony$n.low )  
+             
+             occup.overall.antimony$value[6] <-   sum( occup.tab.antimony$n.medium )  
+             
+             occup.overall.antimony$value[7] <-   sum( occup.tab.antimony$n.high )  
+             
+             ## number formatting
+             
+             test <- data.frame( metric = occup.overall.antimony$metric ,
+                                 
+                                 value = character(7) )
+             
+             
+             
+             test$value[1] <-  paste(formatC( as.numeric( occup.overall.antimony$value[1]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+             
+             test$value[2] <-  paste( signif( as.numeric( occup.overall.antimony$value[2]) , 2), " %", sep="")
+             
+             test$value[3] <-  occup.overall.antimony$value[3]
+             
+             if (test$value[3]=="pot.exposed") test$value[3] <-"Potentially exposed" 
+             
+             test$value[4] <- paste(formatC( as.numeric( occup.overall.antimony$value[4]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+             test$value[5] <-  paste(formatC( as.numeric( occup.overall.antimony$value[5]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+             test$value[6] <-  paste(formatC( as.numeric( occup.overall.antimony$value[6]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+             test$value[7] <-  paste(formatC( as.numeric( occup.overall.antimony$value[7]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+             
+             test$metric <- c("Number of workers in this occupation" , "Proportion of included population(%)" , "Exposure status" ,"Number of unexposed workers" , "Number exposed to low intensity" , "Number exposed to medium intensity" , "Number exposed to high intensity" )
+             
+             
+             return(test)
+       
+     })
+     
+
+output$estbyisco.tungsten.overall <-  renderTable({    
+  
+          occup.tab.tungsten <- estbyoccupation.tungsten.prep()
+          
+          mycountry <- mycountry.prep()
+          
+          
+          occup.overall.tungsten <- data.frame( metric = c("total.n" , "total.perc" , "estatus" , "n.unexp" , "n.low" , "n.medium" , "n.high") , stringsAsFactors = FALSE )
+          
+          occup.overall.tungsten$value[1] <-   sum(occup.tab.tungsten$n.people)  
+          
+          occup.overall.tungsten$value[2] <-   100*occup.overall.tungsten$value[1]/sum( mycountry$n.M * 1000000 )  
+          
+          occup.overall.tungsten$value[3] <- occup.tab.tungsten$estatus[1]
+          
+          occup.overall.tungsten$value[4] <-   sum( occup.tab.tungsten$n.unexp)  
+          
+          occup.overall.tungsten$value[5] <-   sum( occup.tab.tungsten$n.low )  
+          
+          occup.overall.tungsten$value[6] <-   sum( occup.tab.tungsten$n.medium )  
+          
+          occup.overall.tungsten$value[7] <-   sum( occup.tab.tungsten$n.high )  
+          
+          ## number formatting
+          
+          test <- data.frame( metric = occup.overall.tungsten$metric ,
+                              
+                              value = character(7) )
+          
+          
+          
+          test$value[1] <-  paste(formatC( as.numeric( occup.overall.tungsten$value[1]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+          
+          test$value[2] <-  paste( signif( as.numeric( occup.overall.tungsten$value[2]) , 2), " %", sep="")
+          
+          test$value[3] <-  occup.overall.tungsten$value[3]
+          
+          if (test$value[3]=="pot.exposed") test$value[3] <-"Potentially exposed" 
+          
+          test$value[4] <- paste(formatC( as.numeric( occup.overall.tungsten$value[4]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+          test$value[5] <-  paste(formatC( as.numeric( occup.overall.tungsten$value[5]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+          test$value[6] <-  paste(formatC( as.numeric( occup.overall.tungsten$value[6]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+          test$value[7] <-  paste(formatC( as.numeric( occup.overall.tungsten$value[7]), digits=7, decimal.mark=",",big.mark=" ",small.mark=".", small.interval=3)," ",sep="")
+          
+          test$metric <- c("Number of workers in this occupation" , "Proportion of included population(%)" , "Exposure status" ,"Number of unexposed workers" , "Number exposed to low intensity" , "Number exposed to medium intensity" , "Number exposed to high intensity" )
+          
+  
+  return(test)
+  
+})
+    
+
+         
      ############################ Table by COUNTRY
           
-          output$estbyisco.cobalt <-  DT::renderDataTable({ 
+  output$estbyisco.cobalt <-  DT::renderDataTable({ 
             
             occup.tab.cobalt <- estbyoccupation.cobalt.prep()
             
@@ -902,5 +1098,83 @@ shinyServer(function(input, output) {
             
           })
           
-     
+          
+ output$estbyisco.antimony <-  DT::renderDataTable({ 
+            
+                  occup.tab.antimony <- estbyoccupation.antimony.prep()
+                  
+                  datatable(occup.tab.antimony[,2:11],
+                            rownames = FALSE, 
+                            
+                            colnames = c( "Label" , "N.workers" , "Prop of pop(%)" , "Exposure status" , "N.unexp", "N.low" , "N.medium" , "N.high" , 
+                                          "Confidence" , "Frequency"),
+                            
+                            options = list( autoWidth = TRUE , pageLength = 10 , 
+                                            
+                                            columnDefs = list(                                     list(width = '200px', targets = "_all"),
+                                                                                                   list(className = 'dt-center', targets = 2:9),
+                                                                                                   list(className = 'dt-left', targets = 0:1)) ),
+                            
+                            caption = 'Population exposed to antimony by country') %>%
+                    formatRound('n.people', digits = 0)%>%
+                    formatRound('perc.people', digits = 1)%>%
+                    formatRound('n.low', digits = 0)%>%
+                    formatRound('n.medium', digits = 0)%>%
+                    formatRound('n.high', digits = 0)%>%
+                    formatRound('n.unexp', digits = 0)
+            
+          })        
+          
+ 
+ output$estbyisco.tungsten <-  DT::renderDataTable({ 
+   
+             occup.tab.tungsten <- estbyoccupation.tungsten.prep()
+             
+             datatable(occup.tab.tungsten[,2:11],
+                       rownames = FALSE, 
+                       
+                       colnames = c( "Label" , "N.workers" , "Prop of pop(%)" , "Exposure status" , "N.unexp", "N.low" , "N.medium" , "N.high" , 
+                                     "Confidence" , "Frequency"),
+                       
+                       options = list( autoWidth = TRUE , pageLength = 10 , 
+                                       
+                                       columnDefs = list(                                     list(width = '200px', targets = "_all"),
+                                                                                              list(className = 'dt-center', targets = 2:9),
+                                                                                              list(className = 'dt-left', targets = 0:1)) ),
+                       
+                       caption = 'Population exposed to tungsten by country') %>%
+               formatRound('n.people', digits = 0)%>%
+               formatRound('perc.people', digits = 1)%>%
+               formatRound('n.low', digits = 0)%>%
+               formatRound('n.medium', digits = 0)%>%
+               formatRound('n.high', digits = 0)%>%
+               formatRound('n.unexp', digits = 0)
+   
+ })      
+ 
+##########################################   OVERALL TABLES
+          
+          
+          output$overall <-  renderTable({     
+          
+            result <- data.frame( metric = overall.final.cobalt$metric)
+            
+            result$cobalt <- overall.final.cobalt$value
+            
+            result$antimony <- overall.final.antimony$value
+            
+            result$tungsten <- overall.final.tungsten$value
+            
+            result$metric <- c("Number of workers (M)" , "Number of exposed workers (K)" , "Number of unexposed workers (M)" ,"Number of workers with unknown status (M)" ," Number exposed to low intensity (K)" , "Number exposed to medium intensity (K)" , "Number exposed to high intensity (K)", "Number exposed <2h (K)" , "Number exposed 2-12h (K)" , "Number exposed 12-39h (K)" , "Number exposed 40h+ (K)" )
+            
+            result[ c(2,5:11)  , 2:4] <- result[ c(2,5:11)  , 2:4]*1000
+            
+            result <- result[ c(1,4,3,2,5:11) ,]
+            
+            return(result)
+            
+            
+          }, digits = 1)
+          
+         
 })

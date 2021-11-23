@@ -758,4 +758,10 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     overall.final.tungsten$value[11] <-   sum( overall.overall.tungsten$n.40handover , na.rm = TRUE  ) /1000000 
     
     knitr::kable( overall.final.tungsten , row.names = FALSE)
+
+#### saving the overall tables for the shiny app
     
+   saveRDS( overall.final.cobalt , "MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/data/overall.final.cobalt.RDS") 
+   saveRDS( overall.final.antimony , "MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/data/overall.final.antimony.RDS") 
+   saveRDS( overall.final.tungsten , "MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/data/overall.final.tungsten.RDS") 
+   
