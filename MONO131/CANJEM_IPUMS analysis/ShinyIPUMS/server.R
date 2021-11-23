@@ -784,7 +784,7 @@ shinyServer(function(input, output) {
             
                       #selected.occupation <- isco.choice_by_isco()
             
-                      selected.occupation <- 722
+                      selected.occupation <-  isco.choice_by_isco()
                       
                       myisco <- selected.occupation
                       

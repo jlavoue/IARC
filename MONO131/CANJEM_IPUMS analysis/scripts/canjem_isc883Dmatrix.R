@@ -138,14 +138,29 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
    canjem.pop.tungsten$exposed[ canjem.pop.tungsten$CANJEMOK & canjem.pop.tungsten$p >= 1 ] <- "pot.exposed"
    
    canjem.pop.tungsten$exposed[ canjem.pop.tungsten$CANJEMOK & canjem.pop.tungsten$p <1 ] <- "unexposed"
+   
+   
+   ### leaning the proportions 
+   
+   canjem.pop.cobalt[ canjem.pop.cobalt$exposed == "unexposed" , c( 9, 13 , 17) ] <- 100
+   canjem.pop.cobalt[ canjem.pop.cobalt$exposed == "unexposed" , c( 4, 10:12, 14:16 , 18:20) ] <- 0
+   
+   canjem.pop.antimony[ canjem.pop.antimony$exposed == "unexposed" , c( 9, 13 , 17) ] <- 100
+   canjem.pop.antimony[ canjem.pop.antimony$exposed == "unexposed" , c( 4, 10:12, 14:16 , 18:20) ] <- 0
+   
+   canjem.pop.tungsten[ canjem.pop.tungsten$exposed == "unexposed" , c( 9, 13 , 17) ] <- 100
+   canjem.pop.tungsten[ canjem.pop.tungsten$exposed == "unexposed" , c( 4, 10:12, 14:16 , 18:20) ] <- 0
   
    # saving files
    
    saveRDS( canjem.pop.cobalt , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemcobalt.RDS")
+   saveRDS( canjem.pop.cobalt , "MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/data/canjemcobalt.RDS")
    
    saveRDS( canjem.pop.antimony , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemantimony.RDS")
+   saveRDS( canjem.pop.antimony , "MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/data/canjemantimony.RDS")
    
    saveRDS( canjem.pop.tungsten , "MONO131/CANJEM_IPUMS analysis/intermediate data/canjemtungsten.RDS")
+   saveRDS( canjem.pop.tungsten , "MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/data/canjemtungsten.RDS")
    
 #'The tables below describe the exposure status of the CANBJEM population ( jobs held by subjects ): potentially exposed if occupation has a probability of exposure >=5%, unexposed if p<5%, and "unknown" in case of no relevant CANJEM cell.
 #' 
