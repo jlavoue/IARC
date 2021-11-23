@@ -1,0 +1,13 @@
+name: ShinyIPUMS
+title: ShinyIPUMS
+username:
+account: lavoue
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5191941
+bundleId: 5286392
+url: https://lavoue.shinyapps.io/ShinyIPUMS/
+when: 1637702881.5023
+lastSyncTime: 1637702881.5023
+asMultiple: FALSE
+asStatic: FALSE

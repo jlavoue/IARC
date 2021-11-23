@@ -28,11 +28,11 @@ library(shinyTree)
         
         ## CANJEM
         
-        canjem.pop.cobalt <- readRDS( "./data/canjemcobalt.RDS")
+        canjem.pop.cobalt <- readRDS( "./data/CANJEMCobalt.RDS")
         
-        canjem.pop.antimony <- readRDS( "./data/canjemantimony.RDS")
+        canjem.pop.antimony <- readRDS( "./data/CANJEMantimony.RDS")
         
-        canjem.pop.tungsten <- readRDS( "./data/canjemtungsten.RDS")
+        canjem.pop.tungsten <- readRDS( "./data/CANJEMtungsten.RDS")
         
         ## IPUMS
         
