@@ -19,6 +19,8 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     library(plyr)
     
     ############# reading relevant datasets
+
+    source("MONO131/CANJEM_IPUMS analysis/ShinyIPUMS/script/country.overall.function.R", echo=TRUE)
     
     ## CANJEM
     
@@ -59,7 +61,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
   
 #+ workingtotpop , echo = FALSE
   
-  sum(ipums$n_people[ ipums$isco88a != 999])/1000000  
+  sum(ipums$n_people[ ipums$isco88a != 999 & ipums$isco88a != 998 ])/1000000  
   
 #'#number of countries
 
@@ -71,7 +73,7 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 #+ by country , echo = FALSE  
 
-  mycountry <- ddply( ipums[ ipums$isco88a != 999 , ], .(country), summarize, n.M =   sum(n_people)/1000000  )
+  mycountry <- ddply( ipums[ ipums$isco88a != 999 & ipums$isco88a != 998, ], .(country), summarize, n.M =   sum(n_people)/1000000  )
   
   mycountry$country.lab <- country$Label[ match( mycountry$country , country$Value)]
 
@@ -594,4 +596,166 @@ opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
     
     country.overall.tungsten$value[11] <-   sum( country.tab.tungsten$n.40handover , na.rm = TRUE  )  
     
-    knitr::kable( country.overall.tungsten , row.names = FALSE)     
+    knitr::kable( country.overall.tungsten , row.names = FALSE)  
+    
+    
+    
+#' *Making an overall / overall table for COBALT*
+#' 
+    
+#+ double overall table cobalt, echo = FALSE      
+
+    overall.overall.cobalt <- data.frame( country = mycountry$country , 
+                                   total.n = numeric(length(mycountry$country)) ,
+                                   n.exp = numeric(length(mycountry$country)) ,
+                                   n.unexp = numeric(length(mycountry$country)) ,
+                                   n.unknown = numeric(length(mycountry$country)) ,
+                                   n.low = numeric(length(mycountry$country)),
+                                   n.medium = numeric(length(mycountry$country)),
+                                   n.high = numeric(length(mycountry$country)) ,
+                                   n.lessthan2h = numeric(length(mycountry$country)) ,
+                                   n.2_12h = numeric(length(mycountry$country)) ,
+                                   n.12_39h = numeric(length(mycountry$country)) ,
+                                   n.40handover = numeric(length(mycountry$country)))
+    
+    
+    for (i in 1:length(mycountry$country)) { 
+      
+      
+              temp <- fun.countrytab( country.code = overall.overall.cobalt$country[i] , metal = "cobalt")
+    
+              overall.overall.cobalt[ i , 2:12] <- temp$value } 
+    
+    
+    overall.final.cobalt <- data.frame( metric = c("total.n" , "n.exp" , "n.unexp" ,"n.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
+    
+    overall.final.cobalt$value[1] <-   sum(overall.overall.cobalt$total.n)  /1000000
+    
+    overall.final.cobalt$value[2] <-   sum(overall.overall.cobalt$n.exp)  /1000000 
+    
+    overall.final.cobalt$value[3] <-   sum(overall.overall.cobalt$n.unexp)/1000000  
+    
+    overall.final.cobalt$value[4] <-   sum(overall.overall.cobalt$n.unknown)/1000000  
+    
+    overall.final.cobalt$value[5] <-   sum( overall.overall.cobalt$n.low , na.rm = TRUE )  /1000000 
+    
+    overall.final.cobalt$value[6] <-   sum( overall.overall.cobalt$n.medium , na.rm = TRUE  )  /1000000 
+    
+    overall.final.cobalt$value[7] <-   sum( overall.overall.cobalt$n.high , na.rm = TRUE  )  /1000000 
+    
+    overall.final.cobalt$value[8] <-   sum( overall.overall.cobalt$n.lessthan2h , na.rm = TRUE  ) /1000000  
+    
+    overall.final.cobalt$value[9] <-   sum( overall.overall.cobalt$n.2_12h , na.rm = TRUE  )  /1000000 
+    
+    overall.final.cobalt$value[10] <-   sum( overall.overall.cobalt$n.12_39h , na.rm = TRUE  )  /1000000 
+    
+    overall.final.cobalt$value[11] <-   sum( overall.overall.cobalt$n.40handover , na.rm = TRUE  ) /1000000 
+
+    knitr::kable( overall.final.cobalt , row.names = FALSE) 
+    
+#' *Making an overall / overall table for ANTIMONY*
+#' 
+    
+#+ double overall table antimony, echo = FALSE      
+    
+    overall.overall.antimony <- data.frame( country = mycountry$country , 
+                                          total.n = numeric(length(mycountry$country)) ,
+                                          n.exp = numeric(length(mycountry$country)) ,
+                                          n.unexp = numeric(length(mycountry$country)) ,
+                                          n.unknown = numeric(length(mycountry$country)) ,
+                                          n.low = numeric(length(mycountry$country)),
+                                          n.medium = numeric(length(mycountry$country)),
+                                          n.high = numeric(length(mycountry$country)) ,
+                                          n.lessthan2h = numeric(length(mycountry$country)) ,
+                                          n.2_12h = numeric(length(mycountry$country)) ,
+                                          n.12_39h = numeric(length(mycountry$country)) ,
+                                          n.40handover = numeric(length(mycountry$country)))
+    
+    
+    for (i in 1:length(mycountry$country)) { 
+      
+      
+      temp <- fun.countrytab( country.code = overall.overall.antimony$country[i] , metal = "antimony")
+      
+      overall.overall.antimony[ i , 2:12] <- temp$value } 
+    
+    
+    overall.final.antimony <- data.frame( metric = c("total.n" , "n.exp" , "n.unexp" ,"n.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
+    
+    overall.final.antimony$value[1] <-   sum(overall.overall.antimony$total.n)  /1000000
+    
+    overall.final.antimony$value[2] <-   sum(overall.overall.antimony$n.exp)  /1000000 
+    
+    overall.final.antimony$value[3] <-   sum(overall.overall.antimony$n.unexp)/1000000  
+    
+    overall.final.antimony$value[4] <-   sum(overall.overall.antimony$n.unknown)/1000000  
+    
+    overall.final.antimony$value[5] <-   sum( overall.overall.antimony$n.low , na.rm = TRUE )  /1000000 
+    
+    overall.final.antimony$value[6] <-   sum( overall.overall.antimony$n.medium , na.rm = TRUE  )  /1000000 
+    
+    overall.final.antimony$value[7] <-   sum( overall.overall.antimony$n.high , na.rm = TRUE  )  /1000000 
+    
+    overall.final.antimony$value[8] <-   sum( overall.overall.antimony$n.lessthan2h , na.rm = TRUE  ) /1000000  
+    
+    overall.final.antimony$value[9] <-   sum( overall.overall.antimony$n.2_12h , na.rm = TRUE  )  /1000000 
+    
+    overall.final.antimony$value[10] <-   sum( overall.overall.antimony$n.12_39h , na.rm = TRUE  )  /1000000 
+    
+    overall.final.antimony$value[11] <-   sum( overall.overall.antimony$n.40handover , na.rm = TRUE  ) /1000000 
+    
+    knitr::kable( overall.final.antimony , row.names = FALSE)
+    
+#' *Making an overall / overall table for TUNGSTEN*
+#' 
+    
+#+ double overall table tungsten, echo = FALSE      
+    
+    overall.overall.tungsten <- data.frame( country = mycountry$country , 
+                                            total.n = numeric(length(mycountry$country)) ,
+                                            n.exp = numeric(length(mycountry$country)) ,
+                                            n.unexp = numeric(length(mycountry$country)) ,
+                                            n.unknown = numeric(length(mycountry$country)) ,
+                                            n.low = numeric(length(mycountry$country)),
+                                            n.medium = numeric(length(mycountry$country)),
+                                            n.high = numeric(length(mycountry$country)) ,
+                                            n.lessthan2h = numeric(length(mycountry$country)) ,
+                                            n.2_12h = numeric(length(mycountry$country)) ,
+                                            n.12_39h = numeric(length(mycountry$country)) ,
+                                            n.40handover = numeric(length(mycountry$country)))
+    
+    
+    for (i in 1:length(mycountry$country)) { 
+      
+      
+      temp <- fun.countrytab( country.code = overall.overall.tungsten$country[i] , metal = "tungsten")
+      
+      overall.overall.tungsten[ i , 2:12] <- temp$value } 
+    
+    
+    overall.final.tungsten <- data.frame( metric = c("total.n" , "n.exp" , "n.unexp" ,"n.unknown" , "n.low" , "n.medium" , "n.high" , "n.lessthan2h" , "n.2_12h" , "n.12_39h" , "n.40handover") , stringsAsFactors = FALSE )
+    
+    overall.final.tungsten$value[1] <-   sum(overall.overall.tungsten$total.n)  /1000000
+    
+    overall.final.tungsten$value[2] <-   sum(overall.overall.tungsten$n.exp)  /1000000 
+    
+    overall.final.tungsten$value[3] <-   sum(overall.overall.tungsten$n.unexp)/1000000  
+    
+    overall.final.tungsten$value[4] <-   sum(overall.overall.tungsten$n.unknown)/1000000  
+    
+    overall.final.tungsten$value[5] <-   sum( overall.overall.tungsten$n.low , na.rm = TRUE )  /1000000 
+    
+    overall.final.tungsten$value[6] <-   sum( overall.overall.tungsten$n.medium , na.rm = TRUE  )  /1000000 
+    
+    overall.final.tungsten$value[7] <-   sum( overall.overall.tungsten$n.high , na.rm = TRUE  )  /1000000 
+    
+    overall.final.tungsten$value[8] <-   sum( overall.overall.tungsten$n.lessthan2h , na.rm = TRUE  ) /1000000  
+    
+    overall.final.tungsten$value[9] <-   sum( overall.overall.tungsten$n.2_12h , na.rm = TRUE  )  /1000000 
+    
+    overall.final.tungsten$value[10] <-   sum( overall.overall.tungsten$n.12_39h , na.rm = TRUE  )  /1000000 
+    
+    overall.final.tungsten$value[11] <-   sum( overall.overall.tungsten$n.40handover , na.rm = TRUE  ) /1000000 
+    
+    knitr::kable( overall.final.tungsten , row.names = FALSE)
+    

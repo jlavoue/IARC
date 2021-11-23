@@ -12,7 +12,7 @@ population covered in millions
 
 working population covered in millions
 
-    ## [1] 345.4254
+    ## [1] 335.4262
 
 #number of countries
 
@@ -22,49 +22,49 @@ population by country
 
 | country | country.lab         |       n.M | year |
 |--------:|:--------------------|----------:|-----:|
-|     704 | Vietnam             | 36.431529 | 1999 |
-|     826 | United Kingdom      | 31.738100 | 1991 |
-|     608 | Philippines         | 31.359691 | 2010 |
-|     764 | Thailand            | 25.249966 | 2000 |
-|     231 | Ethiopia            | 25.168978 | 1994 |
+|     704 | Vietnam             | 36.417614 | 1999 |
+|     826 | United Kingdom      | 31.484800 | 1991 |
+|     608 | Philippines         | 30.714585 | 2010 |
+|     231 | Ethiopia            | 24.924136 | 1994 |
 |     250 | France              | 23.097700 | 1999 |
-|     818 | Egypt               | 20.171570 | 2006 |
+|     764 | Thailand            | 22.385510 | 2000 |
+|     818 | Egypt               | 19.974660 | 2006 |
 |     364 | Iran                | 17.381785 | 2006 |
-|     710 | South Africa        | 12.319236 | 2007 |
+|     710 | South Africa        | 10.353952 | 2007 |
 |     642 | Romania             |  8.909040 | 2011 |
-|     862 | Venezuela           |  8.352450 | 2001 |
-|     458 | Malaysia            |  8.166250 | 2000 |
-|     508 | Mozambique          |  8.015850 | 2007 |
+|     458 | Malaysia            |  8.081050 | 2000 |
+|     508 | Mozambique          |  7.988730 | 2007 |
+|     862 | Venezuela           |  7.781080 | 2001 |
 |     800 | Uganda              |  7.508910 | 2002 |
-|     116 | Cambodia            |  6.957410 | 2008 |
-|     218 | Ecuador             |  4.915240 | 2001 |
+|     116 | Cambodia            |  6.957120 | 2008 |
 |     620 | Portugal            |  4.899160 | 2001 |
-|     716 | Zimbabwe            |  4.615980 | 2012 |
-|     112 | Belarus             |  4.562320 | 2009 |
-|     152 | Chile               |  4.542160 | 1992 |
-|     192 | Cuba                |  4.295470 | 2002 |
-|     300 | Greece              |  4.125580 | 2001 |
-|     894 | Zambia              |  3.885520 | 2010 |
-|     756 | Switzerland         |  3.794680 | 2000 |
-|     646 | Rwanda              |  3.626350 | 2002 |
+|     218 | Ecuador             |  4.570860 | 2001 |
+|     152 | Chile               |  4.485380 | 1992 |
+|     716 | Zimbabwe            |  4.383900 | 2012 |
+|     112 | Belarus             |  4.296500 | 2009 |
+|     192 | Cuba                |  4.191160 | 2002 |
+|     300 | Greece              |  4.031560 | 2001 |
+|     894 | Zambia              |  3.716550 | 2010 |
 |     320 | Guatemala           |  3.449750 | 2002 |
-|     324 | Guinea              |  3.381260 | 1996 |
-|     686 | Senegal             |  3.206070 | 2002 |
-|      68 | Bolivia             |  3.032190 | 2001 |
-|     598 | Papua New Guinea    |  2.364110 | 2000 |
-|     600 | Paraguay            |  1.988629 | 2002 |
+|     646 | Rwanda              |  3.412850 | 2002 |
+|     324 | Guinea              |  3.287740 | 1996 |
+|     686 | Senegal             |  3.079070 | 2002 |
+|      68 | Bolivia             |  2.878040 | 2001 |
+|     756 | Switzerland         |  2.739000 | 2000 |
+|     598 | Papua New Guinea    |  2.351870 | 2000 |
 |     222 | El Salvador         |  1.961290 | 2007 |
-|     340 | Honduras            |  1.865570 | 2001 |
-|     558 | Nicaragua           |  1.747100 | 2005 |
-|     858 | Uruguay             |  1.304252 | 2006 |
+|     600 | Paraguay            |  1.932430 | 2002 |
+|     340 | Honduras            |  1.776160 | 2001 |
+|     558 | Nicaragua           |  1.735460 | 2005 |
+|     858 | Uruguay             |  1.302478 | 2006 |
 |     188 | Costa Rica          |  1.298980 | 2000 |
 |     591 | Panama              |  1.119970 | 2000 |
-|      51 | Armenia             |  1.086840 | 2011 |
-|     400 | Jordan              |  1.065330 | 2004 |
-|     496 | Mongolia            |  0.796260 | 2000 |
-|      72 | Botswana            |  0.639110 | 2011 |
-|     480 | Mauritius           |  0.558000 | 2000 |
-|     780 | Trinidad and Tobago |  0.469720 | 2000 |
+|      51 | Armenia             |  1.072400 | 2011 |
+|     400 | Jordan              |  1.059700 | 2004 |
+|     496 | Mongolia            |  0.787350 | 2000 |
+|      72 | Botswana            |  0.638490 | 2011 |
+|     480 | Mauritius           |  0.556430 | 2000 |
+|     780 | Trinidad and Tobago |  0.451030 | 2000 |
 
 **CANJEM only , top 5 occupations in terms of prevalence for each JEM**
 
@@ -86,13 +86,13 @@ population by country
 | 812    | Metal-processing-plant operators                         |    158 |  6.329114 | probable   | low       | 40h+      |
 | 815    | Chemical-processing-plant operators                      |    115 |  2.608696 | possible   | low       | 2-12h     |
 
-| ISCO88 | Title                                                     | n.jobs |          p | confidence | intensity | frequency |
-|:-------|:----------------------------------------------------------|-------:|-----------:|:-----------|:----------|:----------|
-| 722    | Blacksmiths, tool-makers and related trades workers       |    309 | 24.2718447 | probable   | high      | 2-12h     |
-| 821    | Metal- and mineral-products machine operators             |    392 |  8.4183673 | probable   | medium    | 2-12h     |
-| 312    | Computer associate professionals                          |     57 |  1.7543860 | definite   | low       | 2-12h     |
-| 315    | Safety and quality inspectors                             |    203 |  0.4926108 | possible   | low       | 40h+      |
-| 724    | Electrical and electronic equipment mechanics and fitters |    240 |  0.4166667 | possible   | low       | 2-12h     |
+| ISCO88 | Title                                               | n.jobs |         p | confidence | intensity | frequency |
+|:-------|:----------------------------------------------------|-------:|----------:|:-----------|:----------|:----------|
+| 722    | Blacksmiths, tool-makers and related trades workers |    309 | 24.271845 | probable   | high      | 2-12h     |
+| 821    | Metal- and mineral-products machine operators       |    392 |  8.418367 | probable   | medium    | 2-12h     |
+| 312    | Computer associate professionals                    |     57 |  1.754386 | definite   | low       | 2-12h     |
+| 10     | Armed forces                                        |    802 |  0.000000 | NA         | NA        | NA        |
+| 112    | Senior government officials                         |     50 |  0.000000 | NA         | NA        | NA        |
 
 **IPUMS analysis : portrait by occupation**
 
@@ -101,15 +101,15 @@ population by country
 | country.lab    | n.people | perc.people | estatus     |   n.unexp |     n.low | n.medium |    n.high | most.freq.confidence | most.freq.frequency |
 |:---------------|---------:|------------:|:------------|----------:|----------:|---------:|----------:|:---------------------|:--------------------|
 | Iran           | 298476.5 |   1.7171797 | pot.exposed | 241485.83 | 18352.923 | 7727.547 | 30910.187 | probable             | 2-12h               |
-| United Kingdom | 227300.0 |   0.7161739 | pot.exposed | 183899.68 | 13976.375 | 5884.790 | 23539.159 | probable             | 2-12h               |
+| United Kingdom | 227300.0 |   0.7219357 | pot.exposed | 183899.68 | 13976.375 | 5884.790 | 23539.159 | probable             | 2-12h               |
 | France         | 199640.0 |   0.8643285 | pot.exposed | 161521.04 | 12275.599 | 5168.673 | 20674.693 | probable             | 2-12h               |
-| Egypt          | 125590.0 |   0.6226089 | pot.exposed | 101610.03 |  7722.362 | 3251.521 | 13006.084 | probable             | 2-12h               |
+| Egypt          | 125590.0 |   0.6287466 | pot.exposed | 101610.03 |  7722.362 | 3251.521 | 13006.084 | probable             | 2-12h               |
 | Romania        |  95980.0 |   1.0773327 | pot.exposed |  77653.72 |  5901.683 | 2484.919 |  9939.676 | probable             | 2-12h               |
 
 | metric     | value             |
 |:-----------|:------------------|
 | total.n    | 1505152.02        |
-| total.perc | 0.435738718701651 |
+| total.perc | 0.448728180670838 |
 | estatus    | pot.exposed       |
 | n.unexp    | 1217760.53398058  |
 | n.low      | 92549.8005825244  |
@@ -120,16 +120,16 @@ population by country
 
 | country.lab | n.people | perc.people | estatus   | n.unexp | n.low | n.medium | n.high | most.freq.confidence | most.freq.frequency |
 |:------------|---------:|------------:|:----------|--------:|------:|---------:|-------:|:---------------------|:--------------------|
-| Armenia     |     2040 |   0.1877001 | unexposed |    2040 |     0 |        0 |      0 | NA                   | NA                  |
-| Bolivia     |    10950 |   0.3611251 | unexposed |   10950 |     0 |        0 |      0 | NA                   | NA                  |
-| Belarus     |    55020 |   1.2059654 | unexposed |   55020 |     0 |        0 |      0 | NA                   | NA                  |
-| Switzerland |    24420 |   0.6435325 | unexposed |   24420 |     0 |        0 |      0 | NA                   | NA                  |
-| Chile       |    16510 |   0.3634835 | unexposed |   16510 |     0 |        0 |      0 | NA                   | NA                  |
+| Armenia     |     2040 |   0.1902275 | unexposed |    2040 |     0 |        0 |      0 | NA                   | NA                  |
+| Bolivia     |    10950 |   0.3804673 | unexposed |   10950 |     0 |        0 |      0 | NA                   | NA                  |
+| Belarus     |    55020 |   1.2805772 | unexposed |   55020 |     0 |        0 |      0 | NA                   | NA                  |
+| Switzerland |    24420 |   0.8915663 | unexposed |   24420 |     0 |        0 |      0 | NA                   | NA                  |
+| Chile       |    16510 |   0.3680848 | unexposed |   16510 |     0 |        0 |      0 | NA                   | NA                  |
 
 | metric     | value             |
 |:-----------|:------------------|
 | total.n    | 1505152.02        |
-| total.perc | 0.435738718701651 |
+| total.perc | 0.448728180670838 |
 | estatus    | unexposed         |
 | n.unexp    | 1505152.02        |
 | n.low      | 0                 |
@@ -141,15 +141,15 @@ population by country
 | country.lab    | n.people | perc.people | estatus     |   n.unexp |     n.low |  n.medium |    n.high | most.freq.confidence | most.freq.frequency |
 |:---------------|---------:|------------:|:------------|----------:|----------:|----------:|----------:|:---------------------|:--------------------|
 | Iran           | 298476.5 |   1.7171797 | pot.exposed | 226030.74 | 23182.640 | 22216.697 | 27046.413 | probable             | 2-12h               |
-| United Kingdom | 227300.0 |   0.7161739 | pot.exposed | 172130.10 | 17654.369 | 16918.770 | 20596.764 | probable             | 2-12h               |
+| United Kingdom | 227300.0 |   0.7219357 | pot.exposed | 172130.10 | 17654.369 | 16918.770 | 20596.764 | probable             | 2-12h               |
 | France         | 199640.0 |   0.8643285 | pot.exposed | 151183.69 | 15506.019 | 14859.935 | 18090.356 | probable             | 2-12h               |
-| Egypt          | 125590.0 |   0.6226089 | pot.exposed |  95106.99 |  9754.563 |  9348.123 | 11380.324 | probable             | 2-12h               |
+| Egypt          | 125590.0 |   0.6287466 | pot.exposed |  95106.99 |  9754.563 |  9348.123 | 11380.324 | probable             | 2-12h               |
 | Romania        |  95980.0 |   1.0773327 | pot.exposed |  72683.88 |  7454.757 |  7144.142 |  8697.217 | probable             | 2-12h               |
 
 | metric     | value             |
 |:-----------|:------------------|
 | total.n    | 1505152.02        |
-| total.perc | 0.435738718701651 |
+| total.perc | 0.448728180670838 |
 | estatus    | pot.exposed       |
 | n.unexp    | 1139823.85980583  |
 | n.low      | 116905.011262136  |
@@ -229,3 +229,51 @@ population by country
 | n.2_12h      | 4.630538e+04 |
 | n.12_39h     | 2.937296e+03 |
 | n.40handover | 4.289298e+03 |
+
+*Making an overall / overall table for COBALT*
+
+| metric       |       value |
+|:-------------|------------:|
+| total.n      | 335.4262301 |
+| n.exp        |   0.5438307 |
+| n.unexp      | 258.9255413 |
+| n.unknown    |  75.9568581 |
+| n.low        |   0.2418236 |
+| n.medium     |   0.1440152 |
+| n.high       |   0.1579919 |
+| n.lessthan2h |   0.0624684 |
+| n.2_12h      |   0.4433326 |
+| n.12_39h     |   0.0063379 |
+| n.40handover |   0.0316918 |
+
+*Making an overall / overall table for ANTIMONY*
+
+| metric       |       value |
+|:-------------|------------:|
+| total.n      | 335.4262301 |
+| n.exp        |   0.3597778 |
+| n.unexp      | 259.1095942 |
+| n.unknown    |  75.9568581 |
+| n.low        |   0.2756293 |
+| n.medium     |   0.0761072 |
+| n.high       |   0.0080413 |
+| n.lessthan2h |   0.0000000 |
+| n.2_12h      |   0.1792140 |
+| n.12_39h     |   0.0097497 |
+| n.40handover |   0.1708141 |
+
+*Making an overall / overall table for TUNGSTEN*
+
+| metric       |       value |
+|:-------------|------------:|
+| total.n      | 335.4262301 |
+| n.exp        |   0.4437399 |
+| n.unexp      | 259.0256321 |
+| n.unknown    |  75.9568581 |
+| n.low        |   0.1359984 |
+| n.medium     |   0.1649968 |
+| n.high       |   0.1427447 |
+| n.lessthan2h |   0.0258397 |
+| n.2_12h      |   0.3571127 |
+| n.12_39h     |   0.0237212 |
+| n.40handover |   0.0370663 |
