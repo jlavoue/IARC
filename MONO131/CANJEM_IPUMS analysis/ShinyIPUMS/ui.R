@@ -55,7 +55,9 @@ ui <- tagList(
              
              p("IPUMS and CANJEM were merged in order to estimate population of workers exposed to cobalt, antimony, and tungsten internationally."),
              
-             p("The IPUMS tab provides an overview of the IPUMS data used, the CANJEM tab shows the information retrieved from the CANJEM, the three other tabs provide exposure estimates for cobalt, antimony, and tungsten"),
+             p("The IPUMS tab provides an overview of the IPUMS data used, the CANJEM tab shows the information retrieved from the CANJEM, the overall estimates tab provides total number of workers exposed to the three metals, and the by-country and by-occupation tabs provide more detailed estimates for specific occupations and countries."),
+             
+             p("In interpreting the data, note that the IPUMS census data with ISCO information covers 43 countries mostly in the years 2000 to 2010, and that the bulk of the CANJEM database is more relevant to the 1970-1990 period. Finally, CANJEM contains more precise occupation and industry defnitions than only 3-D ISCO codes, available from the public app."),
              
              br()
              
